@@ -1,4 +1,4 @@
-\documentclass[11pt,letterpaper]{article}
+\documentclass[11pt,letterpaper,twocolumn]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -7,11 +7,19 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{cuted}
+\usepackage{dblfloatfix}
+\usepackage{microtype}
+\usepackage{placeins}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage{tikz-3dplot}
 \usepackage{xcolor}
 \usetikzlibrary{arrows.meta,calc,positioning}
+\usepgfplotslibrary{ternary}
+\pgfplotsset{compat=1.18}
 
 \newcommand{\term}[1]{#1}
 % State spaces: real (historically realized) vs conceivable (all possible) foods
@@ -19,8 +27,26 @@
 \newcommand{\ConceivableFoods}{\mathbb{F}_{\infty}}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
+\setcounter{topnumber}{3}
+\setcounter{dbltopnumber}{2}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
+\setlength{\textfloatsep}{7pt plus 1pt minus 2pt}
+\setlength{\dbltextfloatsep}{7pt plus 1pt minus 2pt}
+\setlength{\floatsep}{6pt plus 1pt minus 2pt}
+\setlength{\dblfloatsep}{6pt plus 1pt minus 2pt}
+\setlength{\intextsep}{6pt plus 1pt minus 2pt}
+\setlength{\stripsep}{6pt plus 2pt minus 2pt}
+\captionsetup{skip=3pt,font={small,bf},labelfont=bf,textfont=bf}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\flushbottom
 
-\title{A Tensor-Based Expansion of the Cube Rule for Generative Nutrient Morphology}
+\title{A Tensor-Based Expansion of the Cube Rule\\for Generative Nutrient Morphology}
 \author{Dr. Jane Lydia Adams, Ph.D.}
 \date{}
 
@@ -30,7 +56,7 @@
 \maketitle
 
 \begin{abstract}
-We formalize the Cube Rule of Food as a third-order tensor $T \in \{0,1\}^{I \times J \times K}$ whose axes encode cube morphology, protein type, and starch type.
+We extend the Cube Rule of Food by using its morphology categories as one axis of a third-order tensor $T \in \{0,1\}^{I \times J \times K}$ whose axes encode cube morphology, protein type, and starch type.
 Within this ontology, canonical foods can be placed reproducibly, collisions become explicit coordinates with multiple occupants, and empty cells can be interpreted as constrained sites for culinary speculation.
 We show in particular that salad occupies exactly the \texttt{starch\_type=none} slice, examine mono-starch edge cases such as plain rice and bowls of croutons, and characterize sparsity in the tensor as a mix of structural impossibility and uneaten potential.
 To populate and analyze the space, we combine ontology-constrained LLM generation, deterministic post-generation filtering, occupancy visualizations, and a supporting software pipeline that renders both the paper figures and an interactive local web viewer for the tensor outputs.
@@ -45,7 +71,7 @@ To populate and analyze the space, we combine ontology-constrained LLM generatio
 \input{sections/conclusion}
 
 \section*{Acknowledgements}
-This work would of course not have been possible without the framework provided by the Cube Rule of Food by André Arko. The author thanks Connor Wilson for inspiring this idea, Michael Davinroy for introducing the concepts of snickers salad and jello salad, and Andrew McNutt for first sharing SIGBOVIK~\cite{sigbovik}.
+This work would of course not have been possible without Phosphatide's original food-identification post and André Arko's later Cube Rule expansion and popularization. The author thanks Connor Wilson for inspiring this idea, Michael Davinroy for introducing the concepts of snickers salad and jello salad, and Andrew McNutt for first sharing the spirit of this venue.
 
 \bibliographystyle{plain}
 \bibliography{references}

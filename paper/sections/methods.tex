@@ -25,7 +25,7 @@ Figure~\ref{fig:cube-rule-types} in the Introduction summarizes the nine cube-ty
 
 \subsection{The Rice Exception, Mono-Foods, and Dish-Level Classification}
 
-The Cube Rule (cuberule.com) explicitly declines to rule on one case: ``You are free to interpret the nature of rice however you wish.'' It is the only food for which the Rule gives no cube ruling.
+The Cube Rule explicitly declines to rule on one case: ``You are free to interpret the nature of rice however you wish.'' It is the only food for which the Rule gives no cube ruling.
 The Rule \emph{does} address rice in context: nigiri is toast, sushi rolls are sushi, ramen is nachos.
 The ambiguity is thus not rice-in-dishes but \emph{plain rice by itself}---rice as a starch-based mono-food.
 The Rule's nachos examples (couscous, poutine, ramen) are illustrated with other things mixed in (couscous with add-ins, poutine with cheese and gravy); nachos is thus starch \emph{plus} other components, not a bowl of plain starch alone.
@@ -36,13 +36,14 @@ A mono-starch food occupies a set of culinary measure zero in the space of toppi
 
 We propose that plain starches by themselves, as with mashed potatoes (which the Rule classifies as salad, i.e.\ soup as wet salad), are \emph{salads}, and that there exists a gradient from salad to nachos with the addition of more things: lettuce with no croutons is salad; lettuce with croutons is nachos; but a bowl of croutons alone reverts to salad, as it is a single food.
 Here and throughout, when we discuss mono-food ambiguity we mean starch-based mono-foods such as plain rice or a bowl of croutons; starchless mono-foods are already salad under the ontology (with soup treated as wet salad).
-In analogy to the horseshoe theory of political economy---where the far left and far right are argued to resemble each other more than either resembles the center~\cite{horseshoe}---we suggest this be considered the horseshoe theory of salad: the extremes (all lettuce or all croutons) are both salad, while the middle (lettuce and croutons together) is nachos (Figure~\ref{fig:horseshoe-salad}); in the standard lettuce-centered telling, this is simply the Horseshoe Theory of Lettuce.
-\begin{figure}[t]
+In analogy to the horseshoe theory of political economy---where the far left and far right are argued to resemble each other more than either resembles the center~\cite{horseshoe}---we suggest this be considered the horseshoe theory of salad: the extremes (all lettuce or all croutons) are both salad, while the middle (lettuce and croutons together) is nachos (Figures~\ref{fig:horseshoe-salad} and \ref{fig:horseshoe-salad-ternary}); in the standard lettuce-centered telling, this is simply the Horseshoe Theory of Lettuce.
+\begin{figure}[!tb]
 \centering
-\includegraphics[width=0.45\textwidth]{../results/figures/lettuce_croutons_gradient.png}
+\includegraphics[width=\linewidth]{../results/figures/lettuce_croutons_gradient.png}
 \caption{Horseshoe theory of salad: percent lettuce vs.\ percent croutons. The extremes $(0,100)$ and $(100,0)$ are salad (single component); the middle $(50,50)$ is nachos. Dotted line: lettuce-crouton proportion gradient.}
 \label{fig:horseshoe-salad}
 \end{figure}
+\input{sections/ternary_salad_figure}
 Such cases may also warrant a new category entirely: foods that are a single starch, distinct from both ``no structural starch'' (salad) and ``outer container plus inner starch'' (nachos).
 In this work we do not add that category; we classify at the \emph{dish} level so that each dish receives one $(i,j,k)$ from its structural starch placement, and we leave mono-starch boundary cases (plain rice, plain croutons) to the Rule's open interpretation.
 
@@ -58,6 +59,7 @@ Prompt instructions also prioritize commonly recognized dish names over composit
 The inclusion of canonical Cube Rule examples functions as lightweight retrieval-augmented generation: the model is not asked to classify from an unconstrained prior, but from an in-prompt bank of morphology-defining exemplars such as pizza slice, nigiri sushi, burrito, and lasagna.
 Prompt scaffolding also states that cube-type labels are morphology-only tags: for example, ``salad'' does not imply a cold dish, and ``taco'' does not imply spice or cuisine identity.
 Protein semantics are also made explicit in prompting and filtering: \texttt{none} is reserved for cases without meaningful protein contribution, while dairy ingredients (for example milk, cream, yogurt, and cheese) are treated as dairy-protein signals rather than \texttt{none}.
+Accordingly, the canonical Cube Rule flapjacks example is placed at $(i,j,k) = (\texttt{cake}, \texttt{dairy}, \texttt{wheat})$ rather than $(\texttt{toast}, \texttt{none}, \texttt{wheat})$, because the butter sandwiched between layers contributes a meaningful dairy signal; by contrast, a toast sandwich is still a canonical \emph{sandwich} example under the Rule rather than \emph{cake}, since its structure has top and bottom starch faces instead of stacked starch layers with other materials in between~\cite{toast_sandwich}.
 
 \subsection{Model and Cost Disclosure}
 

@@ -1,8 +1,10 @@
 \section{Discussion}
 
-\begin{center}
+\begin{figure*}[!t]
+\centering
 \fbox{%
-\begin{minipage}{0.94\linewidth}
+\begin{minipage}{0.95\textwidth}
+\small
 \begin{theorem}[No Free Lunch Special]
 If the number of distinct foods assigned to tensor cells exceeds $IJK$, then at least one coordinate $(i,j,k)$ must contain more than one food.
 Equivalently, if $|\RealFoods| > IJK$ (or if any subset of $\ConceivableFoods$ of size $> IJK$ is mapped into the index space), then collisions are unavoidable.
@@ -11,11 +13,11 @@ Equivalently, if $|\RealFoods| > IJK$ (or if any subset of $\ConceivableFoods$ o
 There are exactly $IJK$ available cells in the tensor.
 Assigning more than $IJK$ distinct foods to those cells forces at least one cell to receive two or more foods by the pigeonhole principle~\cite{pigeonhole}.
 \end{proof}
-\textit{Example.} A concrete collision can occur at $(i,j,k) = (\text{nachos}, \text{red\_meat}, \text{pasta\_noodle})$, where both pasta salad with ground beef and spaghetti with meatballs plausibly occupy the same tensor cell despite differing in serving convention and internal structure.
+\textit{Example.} A concrete collision can occur at $(i,j,k) = (\text{nachos}, \text{red\_meat}, \text{pasta\_noodle})$, where both pasta salad with ground beef and spaghetti with meatballs plausibly occupy the same cell.
 Such a case suggests that one might introduce a fourth dimension $\ell$ for temperature or a fifth dimension $m$ for protein morphology if finer distinctions are desired.
 \end{minipage}%
 }
-\end{center}
+\end{figure*}
 
 \subsection{Collisions and Ontology Size}
 
@@ -25,6 +27,7 @@ For example, future work could introduce additional dimensions such as vegetable
 One practical tension is model granularity: under-specified ontologies (small $I$, $J$, $K$) collapse semantically distinct foods into the same $(i,j,k)$, while over-specified ontologies create extreme sparsity ($|\mathcal{S}|/IJK$ very small) and weak empirical support per coordinate.
 
 \subsection{Scope of the Ontology}
+\label{sec:candy-salad-discussion}
 
 Future extensions should resolve boundary cases where sugar-dominant processed inclusions (for example nougat/candy in snickers salad) may trigger non-salad intuitions without mapping cleanly to the current starch index $k$.
 This paper restricts attention to edible foods, even though the original Cube Rule also discusses non-food cases and famously proposes, for example, that humans are ravioli (that is, calzones under the Rule's morphology).
@@ -44,3 +47,43 @@ Topological language is useful here: regions where $T_{i,j,k}=1$ is dense in ind
 If local adjacency relations are imposed on occupied cells, $\mathcal{S}$ can also be viewed as inducing a sparse simplicial complex over the index lattice, with missing bridges and cavities corresponding to structurally absent combinations.
 Under that view, persistent homology and broader topological data analysis provide language for discussing connected components, holes, and other mesoscale features of the food-occupancy pattern as the ontology grows, such as whether sushi-like foods form one connected region while dessert salads occupy scattered outlier cells.
 Operationally, the ontology should avoid both excessive coarseness and excessive fragmentation: $I$, $J$, and $K$ should be large enough to separate distinct dishes, but restrained enough to keep $|\mathcal{S}|$ empirically supportable.
+
+\section{Speculative Food Fiction}
+
+One practical use of the framework is imputation: once a neighborhood of the tensor is well populated, nearby empty cells become prompts for novel foods that are morphologically coherent even if they are not yet culturally established.
+The most productive region for this kind of food fiction is arguably the calzone morphology.
+If one asks, objectively, which morphology is most beloved, calzone has a strong claim: it contains dumplings, ravioli, empanadas, and other durable classics, while also absorbing newer handheld starch technologies such as Pop-Tarts and Uncrustables~\cite{arko_cube_rule_food}.
+That pattern is not accidental.
+Fully enclosed starches travel well, protect fillings, and are easy to eat without utensils, so the calzone region of the tensor is both historically crowded and structurally hospitable to innovation.
+
+This makes calzone a natural target for speculative completion.
+Given a desired protein-starch pairing, the framework can ask the LLM to impute a missing but morphologically valid enclosed dish, then accept only outputs whose descriptions preserve the six-face enclosure required by the Cube Rule.
+Table~\ref{tab:speculative-calzones} shows a small sample of accepted calzone candidates proposed for cells treated as empty in the working catalog.
+
+\begin{table}[!t]
+\centering
+\footnotesize
+\caption{Accepted calzone candidates (\texttt{cube\_type=calzone}) proposed by the LLM for cells treated as empty in the working catalog. Some may be rare or previously uncatalogued rather than genuinely novel.}
+\label{tab:speculative-calzones}
+\begin{tabular}{@{}p{0.19\linewidth}p{0.20\linewidth}p{0.49\linewidth}@{}}
+\toprule
+Food & Cell $(j,k)$ & Brief description \\
+\midrule
+Beef Zongzi & \shortstack[l]{\scriptsize\texttt{red\_meat}\\\scriptsize\texttt{rice}} & Glutinous rice dumpling with braised beef fully enclosed by rice. \\
+Chicken Onigiri Ball & \shortstack[l]{\scriptsize\texttt{poultry}\\\scriptsize\texttt{rice}} & Compressed rice ball with a chicken center sealed on every surface. \\
+Egg-Stuffed Potato Knish & \shortstack[l]{\scriptsize\texttt{egg}\\\scriptsize\texttt{potato}} & Potato-dough shell fully enclosing a seasoned egg filling. \\
+Egg Piroshki & \shortstack[l]{\scriptsize\texttt{egg}\\\scriptsize\texttt{wheat}} & Sealed wheat-dough pocket stuffed with chopped egg and scallions. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These examples are intentionally modest rather than fantastical.
+That modesty exposes an epistemic limitation in the setup: because $\RealFoods$ is a theoretical historical set that we only approximate with a finite catalog, an output proposed for a cell in $\mathcal{E}$ need not truly lie in $\ConceivableFoods \setminus \RealFoods$.
+It may instead be a real but rare, poorly documented, regionally specific, or simply uncatalogued food that our current dataset failed to record.
+In other words, the pipeline is better understood as generating candidates at the frontier between the known support of the catalog and the larger, only partially observed set $\RealFoods$.
+
+This raises a natural limiting question: as culinary innovation accumulates over long time scales, does $\RealFoods$ asymptotically approach $\ConceivableFoods$, making genuinely empty cells increasingly scarce?
+We do not answer that here.
+But the framework remains useful under either view.
+If the gap $\ConceivableFoods \setminus \RealFoods$ stays large, then the method is a tool for genuine novelty imputation; if the gap is small, then it is still a productive way to surface interesting, low-attestation, or culturally peripheral combinations that inhabit underexplored regions of the tensor.
+In that weaker but still valuable sense, speculative food fiction is less about inventing nonsense than about finding foods that the morphology suggests ought to exist, whether or not history has already gotten there first.

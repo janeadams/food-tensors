@@ -25,7 +25,7 @@
           "type": "panel",
           "title": "Pairwise Projections of T",
           "paper_label": "fig:tensor-projections-speculated",
-          "caption": "Pairwise projections of T: slices over (i,j), (i,k), and (j,k). Black squares mark canonical occupied cells, gray squares mark accepted real LLM-identified cells, and white squares with black outlines mark LLM speculative cells; empty cells are shown without glyphs. Omitted categories by projection for the speculated stage: Cube vs. Protein (Cube: none; Protein: none); Cube vs. Starch (Cube: none; Starch: Other Grain); Protein vs. Starch (Protein: none; Starch: Other Grain).",
+          "caption": "Pairwise projections of T: slices over (i,j), (i,k), and (j,k). Black squares mark canonical occupied cells, gray squares mark accepted real LLM-identified cells, and white squares with black outlines mark LLM speculative cells; empty cells are not shown. Omitted categories by projection for the speculated stage: Cube vs. Protein (Cube: none; Protein: none); Cube vs. Starch (Cube: none; Starch: Other Grain); Protein vs. Starch (Protein: none; Starch: Other Grain).",
           "default_stage": "speculated",
           "stages": {
             "canonical": "Canonical",
@@ -63,7 +63,7 @@
           "type": "staged_single",
           "title": "3D Occupancy Tensor",
           "paper_label": "fig:tensor-3d-speculated",
-          "caption": "Interactive 3D occupancy tensor view. Black markers indicate canonical occupied cells, gray markers indicate accepted real LLM-identified cells, and white markers with black outlines indicate LLM speculative cells; empty cells are shown without glyphs.",
+          "caption": "Interactive 3D occupancy tensor view. Black markers indicate canonical occupied cells, gray markers indicate accepted real LLM-identified cells, and white markers with black outlines indicate LLM speculative cells; empty cells are not shown.",
           "default_stage": "speculated",
           "stages": {
             "canonical": {

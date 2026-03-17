@@ -45,7 +45,7 @@ def main() -> int:
             alt.X("confidence:Q").bin(maxbins=15).title("Confidence"),
             alt.Y("count()").title("Count"),
         )
-        .properties(width=320, height=200, title="LLM confidence (accepted candidates)")
+        .properties(width=320, height=200)
         .configure_axis(titleFontSize=16, labelFontSize=14)
         .configure_view(stroke=None)
     )

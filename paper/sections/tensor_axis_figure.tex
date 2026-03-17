@@ -1,10 +1,17 @@
-\begin{figure}[t]
+\begin{figure}[!tb]
 \centering
 \tdplotsetmaincoords{68}{118}
-\begin{tikzpicture}[tdplot_main_coords, scale=1.9, line cap=round, line join=round, >=Latex]
+\begin{tikzpicture}[tdplot_main_coords, scale=1.1, line cap=round, line join=round, >=Latex]
 \definecolor{tensorblue}{RGB}{105,105,105}
 \definecolor{tensorfill}{RGB}{210,210,210}
 \definecolor{tensorgray}{RGB}{90,90,90}
+\tikzset{
+  tensorborder/.style={
+    draw=tensorgray,
+    dash pattern=on 1.6pt off 1.6pt,
+    line width=0.32mm
+  }
+}
 
 \coordinate (O) at (0,0,0);
 \coordinate (X) at (4,0,0);
@@ -22,13 +29,17 @@
 \filldraw[fill=tensorfill, fill opacity=0.16, draw=tensorblue!70]
   (X) -- (XY) -- (XYZ) -- (XZ) -- cycle;
 
-\draw[tensorblue!80, line width=0.35mm] (O) -- (Y) -- (YZ) -- (Z) -- cycle;
-\draw[tensorblue!80, line width=0.35mm] (Y) -- (XY) -- (XYZ) -- (YZ);
-\draw[tensorblue!80, line width=0.35mm] (Z) -- (XZ) -- (XYZ);
-\draw[tensorblue!80, line width=0.35mm] (O) -- (X);
+\draw[tensorborder] (O) -- (X);
+\draw[tensorborder] (X) -- (XY);
+\draw[tensorborder] (O) -- (Y);
+\draw[tensorborder] (O) -- (Z);
+\draw[tensorborder] (Y) -- (YZ);
+\draw[tensorborder] (X) -- (XZ);
+\draw[tensorborder] (XY) -- (XYZ);
+\draw[tensorborder] (Z) -- (XZ) -- (XYZ) -- (YZ) -- cycle;
 
-\draw[->, thick] (O) -- (4.65,0,0) node[anchor=west] {$i$ (cube type)};
-\draw[->, thick] (O) -- (0,3.75,0) node[anchor=south] {$j$ (protein)};
+\draw[->, thick] (O) -- (4.65,0,0) node[anchor=west, xshift=5pt, yshift=-4pt] {$i$ (cube type)};
+\draw[->, thick] (O) -- (0,3.75,0) node[anchor=south, xshift=4pt, yshift=4pt] {$j$ (protein)};
 \draw[->, thick] (O) -- (0,0,3.55) node[anchor=south] {$k$ (starch)};
 
 \foreach \p in {(0.55,2.25,0.65),(1.35,0.95,2.1),(2.85,2.55,0.55),(3.1,1.15,2.45),(2.15,1.7,1.0)} {
@@ -37,7 +48,7 @@
 
 \coordinate (P) at (2.35,1.65,1.55);
 \filldraw[fill=white, draw=black, line width=0.25mm] (P) circle (1.55pt);
-\node[anchor=west] at (2.5,1.65,1.55) {$T_{i,j,k}$};
+\node[anchor=west, xshift=6pt, yshift=-3pt] at (2.68,1.65,1.55) {$T_{i,j,k}$};
 \end{tikzpicture}
 \caption{Tensor schematic. The cube-type, protein, and starch axes define the index space of $T$; filled markers illustrate occupied cells in $\mathcal{S}$, and the highlighted marker indicates a generic cell $(i,j,k)$.}
 \label{fig:tensor-axes}
