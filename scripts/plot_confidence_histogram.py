@@ -40,13 +40,14 @@ def main() -> int:
     # Altair histogram: smaller figure, larger axis/tick labels
     chart = (
         alt.Chart(df)
-        .mark_bar()
+        .mark_bar(color="#6f6f6f")
         .encode(
             alt.X("confidence:Q").bin(maxbins=15).title("Confidence"),
             alt.Y("count()").title("Count"),
         )
         .properties(width=320, height=200, title="LLM confidence (accepted candidates)")
         .configure_axis(titleFontSize=16, labelFontSize=14)
+        .configure_view(stroke=None)
     )
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     out_html = FIG_DIR / "confidence_histogram.html"

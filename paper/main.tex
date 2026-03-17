@@ -30,9 +30,10 @@
 \maketitle
 
 \begin{abstract}
-We introduce a tensor-based formulation of the Cube Rule of Food in which dishes are embedded in a third-order tensor $T \in \{0,1\}^{I \times J \times K}$ spanning cube morphology (index $i$), protein taxonomy ($j$), and starch substrate ($k$).
-This formulation supports reproducible placement of canonical Cube Rule foods, detection of collisions among distinct dishes at the same cell, and constrained generation of candidate dishes for vacant cells $(i,j,k)$ with $T_{i,j,k}=0$. This induces a weak topology of taste on the index lattice.
-To operationalize the framework, we use a constrained generative procedure that proposes candidate dishes for empty cells, enforces axis-consistency constraints on $i$, $j$, and $k$, and filters the results before downstream review.
+We formalize the Cube Rule of Food as a third-order tensor $T \in \{0,1\}^{I \times J \times K}$ whose axes encode cube morphology, protein type, and starch type.
+Within this ontology, canonical foods can be placed reproducibly, collisions become explicit coordinates with multiple occupants, and empty cells can be interpreted as constrained sites for culinary speculation.
+We show in particular that salad occupies exactly the \texttt{starch\_type=none} slice, examine mono-starch edge cases such as plain rice and bowls of croutons, and characterize sparsity in the tensor as a mix of structural impossibility and uneaten potential.
+To populate and analyze the space, we combine ontology-constrained LLM generation, deterministic post-generation filtering, occupancy visualizations, and a supporting software pipeline that renders both the paper figures and an interactive local web viewer for the tensor outputs.
 \end{abstract}
 
 \input{sections/introduction}
