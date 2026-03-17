@@ -1,0 +1,78 @@
+\section{Methods}
+
+We define two state spaces in direct analogy to the real numbers $\mathbb{R}$ (the space of all real numbers).
+Let $\RealFoods$ denote the \emph{theoretical} set of all \emph{real} foods: those taken to have been cooked and recorded in history (the culinary analogue of ``real'' in $\mathbb{R}$); we approximate this set with our catalog rather than observe it in full.
+Let $\ConceivableFoods$ denote the \emph{theoretical} set of all \emph{conceivable} foods, including in principle dishes that have never been prepared---the full state space of possible comestibles, which we cannot directly verify---with $\RealFoods \subseteq \ConceivableFoods$.
+Our tensor formalism maps elements of $\ConceivableFoods$ to coordinates; the catalog we maintain is a finite subset of $\RealFoods$, and we speculate over elements of $\ConceivableFoods \setminus \RealFoods$ for empty cells.
+
+Let $T \in \{0,1\}^{I \times J \times K}$ denote a tensor indexed by cube type (axis $i \in \{1,\ldots,I\}$), protein class (axis $j \in \{1,\ldots,J\}$), and starch type (axis $k \in \{1,\ldots,K\}$).
+We set $T_{i,j,k}=1$ when at least one food maps to index triple $(i,j,k)$; the \emph{support set} is $\mathcal{S} = \{(i,j,k) : T_{i,j,k}=1\}$ and the set of \emph{empty cells} is $\mathcal{E} = \{(i,j,k) : T_{i,j,k}=0\}$.
+In implementation, each occupied cell may contain multiple candidate foods, so the data pipeline stores per-food records and derives occupancy from those records; formally we retain binary $T_{i,j,k}$ while allowing multiple foods per $(i,j,k)$ in the database.
+This can be interpreted as a categorical \term{incidence tensor} with sparse $|\mathcal{S}| \ll IJK$.
+Operationally, this turns informal culinary intuition into something closer to algebraic bookkeeping: still edible, but now indexable.
+
+Under the Cube Rule, salad morphology means no structural starch faces; a dish that \emph{contains} starch (e.g., a salad with croutons) is reclassified as nachos (outer container plus inner starch), not salad.
+Therefore no cell $(i_{\text{salad}}, j, k)$ for any starch type $k$ is definitionally valid---we prohibit filling and treat salad+starch cells as out of scope for generation and occupancy.
+
+\subsection{The Rice Exception, Mono-Foods, and Dish-Level Classification}
+
+The Cube Rule (cuberule.com) explicitly declines to rule on one case: ``You are free to interpret the nature of rice however you wish.'' It is the only food for which the Rule gives no cube ruling.
+The Rule \emph{does} address rice in context: nigiri is toast, sushi rolls are sushi, ramen is nachos.
+The ambiguity is thus not rice-in-dishes but \emph{plain rice by itself}---rice as a mono-food.
+The Rule's nachos examples (couscous, poutine, ramen) are illustrated with other things mixed in (couscous with add-ins, poutine with cheese and gravy); nachos is thus starch \emph{plus} other components, not a bowl of plain starch alone.
+We therefore speculate that the exception applies to the nature of \emph{plain rice alone}, and that a similar ambiguity holds for other mono-foods: a bowl of plain pita chips, a bowl of bread crumbs---single-starch items with no second component.
+
+We propose that plain starches by themselves, as with mashed potatoes (which the Rule classifies as salad, i.e.\ soup as wet salad), are \emph{salads}, and that there exists a gradient from salad to nachos with the addition of more things: lettuce with no croutons is salad; lettuce with croutons is nachos; but a bowl of croutons alone reverts to salad, as it is a single food.
+In analogy to the \term{horseshoe theory} of political economy---where the far left and far right are argued to resemble each other more than either resembles the center~\cite{horseshoe}---we suggest this be considered the \term{horseshoe theory of salad}: the extremes (all lettuce or all croutons) are both salad, while the middle (lettuce and croutons together) is nachos (Figure~\ref{fig:horseshoe-salad}).
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.45\textwidth]{../results/figures/lettuce_croutons_gradient.png}
+\caption{Horseshoe theory of salad: percent lettuce vs.\ percent croutons. The extremes $(0,100)$ and $(100,0)$ are salad (single component); the middle $(50,50)$ is nachos. Dotted line: lettuce-crouton proportion gradient.}
+\label{fig:horseshoe-salad}
+\end{figure}
+Such cases may also warrant a new category entirely: foods that are a single starch, distinct from both ``no structural starch'' (salad) and ``outer container plus inner starch'' (nachos).
+In this work we do not add that category; we classify at the \emph{dish} level so that each dish receives one $(i,j,k)$ from its structural starch placement, and we leave mono-starch boundary cases (plain rice, plain croutons) to the Rule's open interpretation.
+
+\subsection{Constrained LLM Candidate Generation}
+
+Cells $(i,j,k) \in \mathcal{E}$ (candidates in $\ConceivableFoods \setminus \RealFoods$) are queried with a morphology-first prompt that includes a compact Cube Rule crash course, type-specific definitions, and canonical Cube Rule examples.
+The prompt enforces exact axis matching for cube morphology, protein class, and starch class rather than semantic similarity.
+For example, bottom-face-only starch placements are treated as toast morphology even when the dish name is not colloquially ``toast''.
+The API call uses \term{schema-constrained generation} rather than free-form text parsing: candidates are returned through a tool payload with typed fields (`shortname`, `description`, `is\_real`, `confidence`, and `rationale\_brief`).
+Prompt instructions also prioritize commonly recognized dish names over compositional labels; when only weak descriptive names are available, the model is instructed to return no candidate.
+Prompt scaffolding also states that cube-type labels are morphology-only tags: for example, ``salad'' does not imply a cold dish, and ``taco'' does not imply spice or cuisine identity.
+Protein semantics are also made explicit in prompting and filtering: `none` is reserved for cases without meaningful protein contribution, while dairy ingredients (for example milk, cream, yogurt, and cheese) are treated as dairy-protein signals rather than `none`.
+
+\subsection{Model and Cost Disclosure}
+
+All LLM-assisted generation runs used Anthropic Claude (model: \texttt{claude-opus-4-6}).
+The total API cost for the full set of reported experiments was \$5.77.
+
+\subsection{Hard Validity Constraints}
+
+The generation prompt includes hard constraints for strict matching:
+\begin{itemize}
+    \item no starch substitution across classes (for example, pastry dough is not interchangeable with pita or other wheat bread forms),
+    \item no protein substitution across classes,
+    \item no composed ``plate'' outputs that combine separate foods (for example, ``X served with Y''),
+    \item conservative null behavior: if no obvious match exists, the model should return an empty candidate list.
+\end{itemize}
+Additionally, salad+starch cells are definitionally prohibited: under the Cube Rule, no salad can contain starch (as evidenced by a salad with croutons being nachos); we do not generate or accept candidates for $(i_{\text{salad}}, j, k)$.
+
+These same constraints are enforced after generation using deterministic lexical guardrails, yielding a lightweight \term{constraint-satisfaction} layer over candidate rows.
+Candidates failing these checks are rejected before they enter the LLM candidate table for downstream review.
+Additionally, candidates below a configured confidence threshold are dropped so uncertain guesses do not set $T_{i,j,k} \leftarrow 1$ for speculative $(i,j,k)$.
+In brief, we allow stochastic proposal but deterministic veto, so imagination is permitted only under supervision.
+
+\subsection{Ground-Truth Calibration}
+
+We validate the filtering pipeline against a ground-truth set derived from canonical Cube Rule examples.
+The validation script checks axis mapping consistency and verifies that canonical Cube Rule examples pass the same lexical and protein/starch guardrails used for LLM-generated rows.
+During calibration, several false negatives were identified and corrected by refining token matching and conflict rules (for example, avoiding substring-only matches and reducing over-restrictive composition heuristics).
+After these adjustments, all canonical Cube Rule examples pass validation under the active guardrail configuration.
+
+\subsection{Visualization Axis Ordering}
+
+For occupancy visualizations, the order of indices on each axis (e.g., which $i$ appears left-to-right) is computed with hierarchical clustering rather than fixed ontology order.
+Each index is represented by its binary occupancy profile (e.g., for fixed $i$, the vector $(T_{i,1,1}, \ldots, T_{i,J,K})$ flattened); pairwise dissimilarity is computed with \term{Jaccard distance}, and leaves are ordered by average-linkage dendrogram seriation.
+This ordering groups indices with similar occupancy structure and is used consistently in both pairwise projections (e.g., $T_{i,j,\cdot}$ over $i,j$) and 3D categorical axes, producing an interpretable \term{occupancy manifold} view of the tensor slices.

@@ -1,0 +1,15 @@
+[project]
+name = "sigbovik"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "altair>=6.0.0",
+    "kaleido>=1.2.0",
+    "pandas>=3.0.1",
+    "pillow>=12.1.1",
+    "plotly>=6.6.0",
+    "scipy>=1.17.1",
+    "termcolor>=3.3.0",
+    "tqdm>=4.67.3",
+    "vl-convert-python>=1.9.0.post1",
+]

@@ -1,0 +1,13 @@
+shortname,description,cube_type,protein_type,starch_type,is_real,source_url
+Hot dog,Sausage in a sliced bun,taco,red_meat,wheat,true,https://cuberule.com/
+Pizza slice,Slice with crust base and toppings,toast,dairy,wheat,true,https://cuberule.com/
+Nigiri sushi,Rice base topped with fish,toast,seafood,rice,true,https://cuberule.com/
+Sushi roll,Rice and filling wrapped with nori,sushi,seafood,rice,true,https://cuberule.com/
+Bread bowl soup,Soup served in hollowed bread bowl,quiche,none,wheat,true,https://cuberule.com/
+Burrito,Filling wrapped in tortilla,calzone,red_meat,wheat,true,https://cuberule.com/
+Falafel wrap,Falafel wrapped in pita,sushi,plant_protein,wheat,true,https://cuberule.com/
+Corn dog,Hot dog coated with corn batter,calzone,red_meat,corn,true,https://cuberule.com/
+Dumpling,Sealed dough parcel with filling,calzone,red_meat,pastry_dough,true,https://cuberule.com/
+Pop-Tart,Sealed pastry pocket with sweet filling,calzone,none,pastry_dough,true,https://cuberule.com/
+Mashed potatoes,Creamy smooth potato preparation,salad,none,potato,true,https://cuberule.com/
+Lasagna,Layered pasta sheets with fillings,cake,red_meat,pasta_noodle,true,https://cuberule.com/

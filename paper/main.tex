@@ -1,0 +1,46 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newcommand{\term}[1]{\textcolor{blue}{#1}}
+% State spaces: real (historically realized) vs conceivable (all possible) foods
+\newcommand{\RealFoods}{\mathbb{F}_{\mathrm{real}}}
+\newcommand{\ConceivableFoods}{\mathbb{F}_{\infty}}
+
+\title{A Tensor-Based Expansion of the Cube Rule for Generative Nutrient Morphology}
+\author{Jane Lydia Adams}
+\date{\today}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\maketitle
+
+\begin{abstract}
+We introduce a rigorously parameterized culinary formalism in which edible artifacts are embedded in a third-order nutrient tensor $T \in \{0,1\}^{I \times J \times K}$ spanning cube morphology (index $i$), protein taxonomy ($j$), and starch substrate ($k$).
+By recasting food morphology as a coordinate geometry problem over $(i,j,k)$, our framework enables reproducible placement of canonical Cube Rule foods, detection of topological collisions among semantically distinct meals at the same cell, and principled synthesis of plausible-but-previously-unobserved comestible configurations for vacant cells $(i,j,k)$ with $T_{i,j,k}=0$.
+To operationalize this framework, we formulate a constrained generative procedure that samples candidate meals for empty cells, enforces axis-consistency invariants on $i$, $j$, $k$ under rejection, and ranks surviving specimens via a composite objective over culinary coherence and novelty.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methods}
+\input{sections/experiments}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\section*{Acknowledgements}
+This work would of course not have been possible without the framework provided by the Cube Rule of Food by André Arko. The author thanks Connor Wilson for inspiring this idea, Michael Davinroy for introducing the concepts of snickers salad and jello salad, and Andrew McNutt for first sharing SIGBOVIK.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

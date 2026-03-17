@@ -1,0 +1,46 @@
+.DS_Store
+.cursor/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local environments
+.venv/
+.env
+.env.*
+
+# Generated processed data
+data/processed/*
+!data/processed/.gitkeep
+
+# Generated results and experiment artifacts
+results/*
+!results/.gitkeep
+results/figures/
+results/experiments/
+results/llm_batches/*
+!results/llm_batches/.gitkeep
+
+# Generated paper inputs and outputs
+paper/sections/generated/*
+!paper/sections/generated/.gitkeep
+paper/main.pdf
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.lof
+paper/*.log
+paper/*.lot
+paper/*.out
+paper/*.run.xml
+paper/*.synctex.gz
+paper/*.toc
+paper/_minted-*/
