@@ -259,7 +259,7 @@ def write_outputs(rows: list[dict[str, Any]], model: str) -> None:
         [
             "\\bottomrule",
             "\\end{tabular}",
-            "\\caption{Mini-experiment: only foods containing the word salad were tested, and only violations of the Cube Rule salad definition (no structural starch faces) are reported.}",
+            "\\caption{Mini-experiment: only foods containing the word salad were tested, and only violations of the Cube Rule salad definition (no structural starch faces; in the tensor, salad with \\texttt{starch\\_type=none}) are reported.}",
             "\\label{tab:salad-cube-rule}",
             "\\end{table}",
             "",

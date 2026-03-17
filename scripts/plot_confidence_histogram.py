@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot histogram of LLM confidence scores and write caption with top/bottom examples."""
+"""Plot histogram of LLM confidence scores and write an explanatory caption."""
 
 from __future__ import annotations
 
@@ -37,21 +37,6 @@ def main() -> int:
         ]
     )
 
-    # Top 3 and bottom 3 by confidence (tie-break by shortname for determinism)
-    sorted_asc = df.sort_values(["confidence", "shortname"])
-    sorted_desc = df.sort_values(["confidence", "shortname"], ascending=[False, True])
-    lowest = sorted_asc.head(3)
-    highest = sorted_desc.head(3)
-
-    def fmt_examples(sub: pd.DataFrame) -> str:
-        return ", ".join(
-            f"{row['shortname']} ({row['confidence']:.2f})"
-            for _, row in sub.iterrows()
-        )
-
-    highest_str = fmt_examples(highest)
-    lowest_str = fmt_examples(lowest)
-
     # Altair histogram: smaller figure, larger axis/tick labels
     chart = (
         alt.Chart(df)
@@ -74,8 +59,10 @@ def main() -> int:
     PAPER_GENERATED.mkdir(parents=True, exist_ok=True)
     caption = (
         "Distribution of model confidence for accepted LLM-generated candidates. "
-        f"Highest confidence: {highest_str}. "
-        f"Lowest confidence: {lowest_str}."
+        "The shape is visibly non-parametric because these confidence values are "
+        "bounded self-reports on $[0,1]$, then truncated by the acceptance cutoff "
+        "at 0.75, so the observed mass piles up at a few high-confidence values "
+        "rather than following a Gaussian law."
     )
     caption_tex = f"\\caption{{{caption}}}\n\\label{{fig:confidence-histogram}}\n"
     CAPTION_TEX.write_text(caption_tex)

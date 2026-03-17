@@ -29,7 +29,7 @@ from tensor_food.schema import (
     PROTEIN_TYPES,
     STARCH_TYPES,
     FoodRecord,
-    is_salad_starch_prohibited,
+    is_structurally_invalid_cell,
     normalize_food_id,
     validate_axes,
 )
@@ -140,13 +140,33 @@ CUBE_MORPHOLOGY = {
 }
 
 STARCH_REQUIRED_TERMS = {
-    "wheat": ["bread", "bun", "pita", "tortilla", "wheat", "flatbread", "roll", "crust"],
+    "wheat": [
+        "bread",
+        "bun",
+        "pita",
+        "tortilla",
+        "wheat",
+        "flatbread",
+        "roll",
+        "crust",
+        "wrap",
+        "sandwich",
+        "muffin",
+        "sponge",
+        "flapjack",
+        "flapjacks",
+        "pancake",
+        "pancakes",
+        "crouton",
+        "croutons",
+        "uncrustable",
+    ],
     "rice": ["rice", "risotto", "arborio", "sushi rice"],
-    "corn": ["corn", "masa", "arepa", "polenta", "cornmeal"],
-    "potato": ["potato", "tater", "hash brown", "gnocchi"],
-    "pasta_noodle": ["pasta", "noodle", "spaghetti", "ramen", "macaroni", "orzo"],
-    "pastry_dough": ["pastry", "puff", "phyllo", "pie crust", "tart", "dough"],
-    "other_grain": ["barley", "quinoa", "couscous", "oat", "grain"],
+    "corn": ["corn", "masa", "arepa", "polenta", "cornmeal", "tortilla", "tortillas", "quesadilla", "enchilada"],
+    "potato": ["potato", "tater", "hash brown", "gnocchi", "french fry", "french fries", "fries"],
+    "pasta_noodle": ["pasta", "noodle", "noodles", "spaghetti", "ramen", "macaroni", "orzo"],
+    "pastry_dough": ["pastry", "puff", "phyllo", "pie crust", "tart", "dough", "pie", "pies"],
+    "other_grain": ["barley", "quinoa", "couscous", "oat", "grain", "cereal"],
 }
 
 STARCH_FORBIDDEN_TERMS = {
@@ -337,6 +357,7 @@ Category semantics are morphology-only:
 - "sushi" means four-face enclosure pattern; it does NOT imply Japanese ingredients.
 - "calzone" means full six-face enclosure; it does NOT imply Italian flavor profile.
 - Ignore flavor descriptors (spicy/sweet), serving temperature (hot/cold), and cuisine labels unless they affect starch placement.
+- salad cells use starch_type=none because they have no structural starch substrate.
 
 Axis definitions:
 - cube_type categories: {CUBE_TYPES}
@@ -371,6 +392,7 @@ Task:
 - HARD CONSTRAINT: match the requested starch_type exactly; do not substitute related starches.
 - HARD CONSTRAINT: match the requested protein_type exactly; do not substitute neighboring protein categories.
 - Example strictness: if starch_type is pastry_dough, do not return pita/bread/tortilla foods.
+- If starch_type=none, the dish must have no structural starch substrate.
 - HARD CONSTRAINT: return a single canonical dish/entity, not a composed plate with separate components.
 - Reject formats like "X served with Y", "X alongside Y", or "X over Y" when X and Y are separate items.
 - HARD CONSTRAINT: do not invent weak matches to fill the cell; empty output is valid and preferred when uncertain.
@@ -420,6 +442,7 @@ Cube Rule crash course (morphology-first):
 Canonical morphology: ramen is NACHOS (outer container + inner starch), not salad. Do not propose ramen or ramen-broth dishes for salad cells.
 
 Category semantics are morphology-only (e.g. "salad" = no structural starch; "taco" = left-bottom-right starch; no temperature/cuisine requirements).
+Salad cells use starch_type=none; non-salad cells require a non-none structural starch type.
 
 Axis definitions:
 - cube_type: {CUBE_TYPES}
@@ -519,11 +542,11 @@ def all_tensor_cells() -> list[tuple[str, str, str]]:
 
 
 def fillable_tensor_cells() -> list[tuple[str, str, str]]:
-    """Cells that are allowed to be filled; excludes (salad, *, k) — under the Cube Rule, salad cannot contain starch."""
+    """Cells that are allowed to be filled under the structural starch ontology."""
     return [
         (c, p, s)
         for (c, p, s) in all_tensor_cells()
-        if not is_salad_starch_prohibited(c, p, s)
+        if not is_structurally_invalid_cell(c, p, s)
     ]
 
 
@@ -545,7 +568,7 @@ def validated_candidates(
     min_confidence: float,
     speculative: bool = False,
 ) -> list[dict[str, Any]]:
-    if is_salad_starch_prohibited(cube_type, protein_type, starch_type):
+    if is_structurally_invalid_cell(cube_type, protein_type, starch_type):
         return []
     candidates = payload.get("candidates")
     if not isinstance(candidates, list):

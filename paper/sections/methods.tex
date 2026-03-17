@@ -2,17 +2,23 @@
 
 We define two state spaces in direct analogy to the real numbers $\mathbb{R}$ (the space of all real numbers).
 Let $\RealFoods$ denote the \emph{theoretical} set of all \emph{real} foods: those taken to have been cooked and recorded in history (the culinary analogue of ``real'' in $\mathbb{R}$); we approximate this set with our catalog rather than observe it in full.
-Let $\ConceivableFoods$ denote the \emph{theoretical} set of all \emph{conceivable} foods, including in principle dishes that have never been prepared---the full state space of possible comestibles, which we cannot directly verify---with $\RealFoods \subseteq \ConceivableFoods$.
+Let $\ConceivableFoods$ denote the \emph{theoretical} set of all \emph{conceivable} foods, including in principle dishes that have never been prepared---the full state space of possible foods, which we cannot directly verify---with $\RealFoods \subseteq \ConceivableFoods$.
 Our tensor formalism maps elements of $\ConceivableFoods$ to coordinates; the catalog we maintain is a finite subset of $\RealFoods$, and we speculate over elements of $\ConceivableFoods \setminus \RealFoods$ for empty cells.
 
 Let $T \in \{0,1\}^{I \times J \times K}$ denote a tensor indexed by cube type (axis $i \in \{1,\ldots,I\}$), protein class (axis $j \in \{1,\ldots,J\}$), and starch type (axis $k \in \{1,\ldots,K\}$).
+The starch axis includes a distinguished \texttt{none} value for dishes with no structural starch substrate.
 We set $T_{i,j,k}=1$ when at least one food maps to index triple $(i,j,k)$; the \emph{support set} is $\mathcal{S} = \{(i,j,k) : T_{i,j,k}=1\}$ and the set of \emph{empty cells} is $\mathcal{E} = \{(i,j,k) : T_{i,j,k}=0\}$.
 In implementation, each occupied cell may contain multiple candidate foods, so the data pipeline stores per-food records and derives occupancy from those records; formally we retain binary $T_{i,j,k}$ while allowing multiple foods per $(i,j,k)$ in the database.
 This can be interpreted as a categorical \term{incidence tensor} with sparse $|\mathcal{S}| \ll IJK$.
-Operationally, this turns informal culinary intuition into something closer to algebraic bookkeeping: still edible, but now indexable.
+Operationally, this turns informal culinary intuition into an explicit indexed representation.
+\input{sections/tensor_axis_figure}
 
-Under the Cube Rule, salad morphology means no structural starch faces; a dish that \emph{contains} starch (e.g., a salad with croutons) is reclassified as nachos (outer container plus inner starch), not salad.
-Therefore no cell $(i_{\text{salad}}, j, k)$ for any starch type $k$ is definitionally valid---we prohibit filling and treat salad+starch cells as out of scope for generation and occupancy.
+Under the Cube Rule, salad morphology means no structural starch faces.
+In the tensor, such cases occupy the slice $(i_{\text{salad}}, j, k_{\text{none}})$.
+A dish that contains structural starch (e.g., a salad with croutons) is reclassified as nachos (outer container plus inner starch), not salad.
+Accordingly, salad cells are generated and analyzed only at \texttt{starch\_type=none}, while non-salad morphologies require a non-\texttt{none} starch type.
+Figure~\ref{fig:cube-rule-types} summarizes the nine cube-type morphologies used on axis $i$.
+\input{sections/cube_rule_types_figure}
 
 \subsection{The Rice Exception, Mono-Foods, and Dish-Level Classification}
 
@@ -36,12 +42,15 @@ In this work we do not add that category; we classify at the \emph{dish} level s
 \subsection{Constrained LLM Candidate Generation}
 
 Cells $(i,j,k) \in \mathcal{E}$ (candidates in $\ConceivableFoods \setminus \RealFoods$) are queried with a morphology-first prompt that includes a compact Cube Rule crash course, type-specific definitions, and canonical Cube Rule examples.
+This prompt can be viewed as a small \term{prompt taxonomy}: it separates structural morphology instructions, axis-definition instructions, and admissibility constraints so that each part of the classification problem is stated explicitly.
 The prompt enforces exact axis matching for cube morphology, protein class, and starch class rather than semantic similarity.
 For example, bottom-face-only starch placements are treated as toast morphology even when the dish name is not colloquially ``toast''.
-The API call uses \term{schema-constrained generation} rather than free-form text parsing: candidates are returned through a tool payload with typed fields (`shortname`, `description`, `is\_real`, `confidence`, and `rationale\_brief`).
+The API call uses \term{schema-constrained generation} rather than free-form text parsing: candidates are returned through a tool payload with typed fields (\texttt{shortname}, \texttt{description}, \texttt{is\_real}, \texttt{confidence}, and \texttt{rationale\_brief}).
+Operationally, this is also a practical form of \term{grammar-constrained decoding}, since only outputs that satisfy the required field structure can be returned.
 Prompt instructions also prioritize commonly recognized dish names over compositional labels; when only weak descriptive names are available, the model is instructed to return no candidate.
+The inclusion of canonical Cube Rule examples functions as lightweight \term{retrieval-augmented generation}: the model is not asked to classify from an unconstrained prior, but from an in-prompt bank of morphology-defining exemplars.
 Prompt scaffolding also states that cube-type labels are morphology-only tags: for example, ``salad'' does not imply a cold dish, and ``taco'' does not imply spice or cuisine identity.
-Protein semantics are also made explicit in prompting and filtering: `none` is reserved for cases without meaningful protein contribution, while dairy ingredients (for example milk, cream, yogurt, and cheese) are treated as dairy-protein signals rather than `none`.
+Protein semantics are also made explicit in prompting and filtering: \texttt{none} is reserved for cases without meaningful protein contribution, while dairy ingredients (for example milk, cream, yogurt, and cheese) are treated as dairy-protein signals rather than \texttt{none}.
 
 \subsection{Model and Cost Disclosure}
 
@@ -57,12 +66,13 @@ The generation prompt includes hard constraints for strict matching:
     \item no composed ``plate'' outputs that combine separate foods (for example, ``X served with Y''),
     \item conservative null behavior: if no obvious match exists, the model should return an empty candidate list.
 \end{itemize}
-Additionally, salad+starch cells are definitionally prohibited: under the Cube Rule, no salad can contain starch (as evidenced by a salad with croutons being nachos); we do not generate or accept candidates for $(i_{\text{salad}}, j, k)$.
+Additionally, cube/starch pairings that violate the structural ontology are prohibited: salad is generated only in the \texttt{starch\_type=none} slice, and non-salad morphologies are generated only with non-\texttt{none} starch types.
 
 These same constraints are enforced after generation using deterministic lexical guardrails, yielding a lightweight \term{constraint-satisfaction} layer over candidate rows.
+In that sense, the pipeline combines stochastic proposal with \term{guided decoding}: the model is steered both at generation time and at acceptance time toward outputs that satisfy the ontology.
 Candidates failing these checks are rejected before they enter the LLM candidate table for downstream review.
 Additionally, candidates below a configured confidence threshold are dropped so uncertain guesses do not set $T_{i,j,k} \leftarrow 1$ for speculative $(i,j,k)$.
-In brief, we allow stochastic proposal but deterministic veto, so imagination is permitted only under supervision.
+In brief, candidate proposal is stochastic, but acceptance is governed by deterministic constraints and review.
 
 \subsection{Ground-Truth Calibration}
 
@@ -76,3 +86,4 @@ After these adjustments, all canonical Cube Rule examples pass validation under 
 For occupancy visualizations, the order of indices on each axis (e.g., which $i$ appears left-to-right) is computed with hierarchical clustering rather than fixed ontology order.
 Each index is represented by its binary occupancy profile (e.g., for fixed $i$, the vector $(T_{i,1,1}, \ldots, T_{i,J,K})$ flattened); pairwise dissimilarity is computed with \term{Jaccard distance}, and leaves are ordered by average-linkage dendrogram seriation.
 This ordering groups indices with similar occupancy structure and is used consistently in both pairwise projections (e.g., $T_{i,j,\cdot}$ over $i,j$) and 3D categorical axes, producing an interpretable \term{occupancy manifold} view of the tensor slices.
+At a descriptive level, this reflects a weak \term{manifold hypothesis}: foods that are nearby in ontology space tend to exhibit related occupancy patterns rather than arbitrary dispersion across the tensor.

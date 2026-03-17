@@ -17,7 +17,7 @@ if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
 import fill_tensor_llm as pipeline  # noqa: E402
-from tensor_food.schema import is_salad_starch_prohibited
+from tensor_food.schema import is_structurally_invalid_cell
 
 SEED_CSV = ROOT / "data" / "raw" / "cube_rule_examples.csv"
 FOODS_JSONL = ROOT / "data" / "processed" / "foods.jsonl"
@@ -50,8 +50,8 @@ def main() -> int:
             protein_type = row["protein_type"].strip()
             starch_type = row["starch_type"].strip()
 
-            if is_salad_starch_prohibited(cube_type, protein_type, starch_type):
-                continue  # skip: salad+starch cells are definitionally prohibited, not in scope
+            if is_structurally_invalid_cell(cube_type, protein_type, starch_type):
+                continue  # skip: cube/starch pair is definitionally invalid under the ontology
             total += 1
 
             # Check axis vocabulary validity.

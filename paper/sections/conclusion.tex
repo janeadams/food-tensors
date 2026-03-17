@@ -1,15 +1,17 @@
 \section{Conclusion}
 
-We have shown that the Cube Rule of Food can be lifted from internet meme to rigorous geometry: edible artifacts map to coordinates $(i,j,k)$ in a third-order tensor $T$, with cube morphology $i$, protein taxonomy $j$, and starch substrate $k$ as the axes of a discrete culinary state space.
+We have shown that the Cube Rule of Food can be expressed as a geometric classification problem: dishes map to coordinates $(i,j,k)$ in a third-order tensor $T$, with cube morphology $i$, protein taxonomy $j$, and starch substrate $k$ as the axes of a discrete culinary state space.
 Canonical Cube Rule examples occupy well-defined cells; empty cells correspond to conceivable-but-unobserved dishes; and collisions---multiple foods at the same $(i,j,k)$---become topological facts rather than matters of taste.
-By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad cannot contain starch; the rice exception applies to plain rice as a mono-food; and the \term{horseshoe theory of salad} captures the gradient from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together).
+By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad occupies the \texttt{starch\_type=none} slice; the rice exception applies to plain rice as a mono-food; and the \term{horseshoe theory of salad} captures the gradient from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together).
+Methodologically, this combines \term{prompt taxonomies}, lightweight \term{retrieval-augmented generation}, \term{guided decoding}, and constrained \term{tensor completion} within a single food-classification pipeline.
 
-This formalism is not a dead end---it is a scaffold.
-The index sets $I$, $J$, and $K$ can grow in principled ways.
+This formalism can also be extended in principled ways.
+The index sets $I$, $J$, and $K$ need not remain fixed.
 The cube axis $i$ may gain a dedicated \emph{single-starch} category, resolving the Rule's ``interpret as you wish'' for plain rice and bowls of croutons without collapsing them into salad.
-The protein axis $j$ may admit gelatin (and thus jello, soup dumplings, and other gelatin-bound dishes) as a distinct type, opening a sparse but vivid region of $\mathcal{S}$.
+The protein axis $j$ may admit gelatin (and thus jello, soup dumplings, and other aspic-bound dishes) as a distinct type, yielding a sparse but coherent region of $\mathcal{S}$.
 The starch axis $k$ may be extended to include sugar-dominant substrates---candy, nougat, Snickers bars---so that Snickers salad and its ilk cease to be boundary cases and take their place at a named coordinate.
-Each expansion refines the atlas: the menu remains coordinate-bearing, and the space of conceivable foods becomes ever more navigable.
+Such an ontological change, however, should be made with care and with attention to cultural naming practices: doing so would create tension between the Midwestern term ``Snickers salad'' and the strict starch-morphology Cube Rule definition of ``salad,'' potentially opening taxonomic rifts between competing ontologies.
+Each such expansion refines the representation of conceivable foods within the same indexing framework.
 
-What this research shows is that morphology, protein, and starch can be made to carry weight not as loose labels but as indices.
-The future of the tensor is not a checklist of next steps but a widening of the same idea: that cuisine can be charted, that empty cells can be filled with discipline, and that the Cube Rule---with its salad prohibition, its rice exception, and its horseshoe of lettuce and croutons---deserves a formalism that is both strict and expandable.
+More broadly, this framework treats morphology, protein, and starch as formal indices rather than informal descriptors.
+Future work can therefore extend the same tensor formalism while keeping the convention that salad occupies the \texttt{starch\_type=none} slice, the rice exception, and mono-food boundary cases explicit.

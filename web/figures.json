@@ -1,0 +1,93 @@
+{
+  "title": "Tensor Food Figures",
+  "subtitle": "Interactive browser view of the figures and figure groups used in the paper.",
+  "sections": [
+    {
+      "id": "methods",
+      "title": "Methods",
+      "description": "Figures referenced in the methods section.",
+      "figures": [
+        {
+          "type": "single",
+          "title": "Horseshoe Theory of Salad",
+          "paper_label": "fig:horseshoe-salad",
+          "caption": "Horseshoe theory of salad: percent lettuce vs. percent croutons. The extremes (0,100) and (100,0) are salad (single component); the middle (50,50) is nachos. Dotted line: lettuce-crouton proportion gradient.",
+          "html": "../results/figures/lettuce_croutons_gradient.html"
+        }
+      ]
+    },
+    {
+      "id": "experiments",
+      "title": "Experiments",
+      "description": "Interactive versions of the experiment figures, including all tensor stages already exported by the plotting scripts.",
+      "figures": [
+        {
+          "type": "panel",
+          "title": "Pairwise Projections of T",
+          "paper_label": "fig:tensor-projections-speculated",
+          "caption": "Pairwise projections of T: slices over (i,j), (i,k), and (j,k). Black squares mark canonical occupied cells, gray squares mark accepted real LLM-identified cells, and white squares with black outlines mark LLM speculative cells; empty cells are shown without glyphs. Omitted categories by projection for the speculated stage: Cube vs. Protein (Cube: none; Protein: none); Cube vs. Starch (Cube: none; Starch: Other Grain); Protein vs. Starch (Protein: none; Starch: Other Grain).",
+          "default_stage": "speculated",
+          "stages": {
+            "canonical": "Canonical",
+            "identified": "Canonical + LLM Identified",
+            "speculated": "Canonical + LLM Identified + LLM Speculated"
+          },
+          "views": [
+            {
+              "title": "Cube vs Protein",
+              "paths": {
+                "canonical": "../results/figures/canonical/tensor_cube_vs_protein.html",
+                "identified": "../results/figures/canonical_plus_llm_identified/tensor_cube_vs_protein.html",
+                "speculated": "../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_cube_vs_protein.html"
+              }
+            },
+            {
+              "title": "Cube vs Starch",
+              "paths": {
+                "canonical": "../results/figures/canonical/tensor_cube_vs_starch.html",
+                "identified": "../results/figures/canonical_plus_llm_identified/tensor_cube_vs_starch.html",
+                "speculated": "../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_cube_vs_starch.html"
+              }
+            },
+            {
+              "title": "Protein vs Starch",
+              "paths": {
+                "canonical": "../results/figures/canonical/tensor_protein_vs_starch.html",
+                "identified": "../results/figures/canonical_plus_llm_identified/tensor_protein_vs_starch.html",
+                "speculated": "../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_protein_vs_starch.html"
+              }
+            }
+          ]
+        },
+        {
+          "type": "staged_single",
+          "title": "3D Occupancy Tensor",
+          "paper_label": "fig:tensor-3d-speculated",
+          "caption": "Interactive 3D occupancy tensor view. Black markers indicate canonical occupied cells, gray markers indicate accepted real LLM-identified cells, and white markers with black outlines indicate LLM speculative cells; empty cells are shown without glyphs.",
+          "default_stage": "speculated",
+          "stages": {
+            "canonical": {
+              "label": "Canonical",
+              "path": "../results/figures/canonical/tensor_3d.html"
+            },
+            "identified": {
+              "label": "Canonical + LLM Identified",
+              "path": "../results/figures/canonical_plus_llm_identified/tensor_3d.html"
+            },
+            "speculated": {
+              "label": "Canonical + LLM Identified + LLM Speculated",
+              "path": "../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_3d.html"
+            }
+          }
+        },
+        {
+          "type": "single",
+          "title": "LLM Confidence Histogram",
+          "paper_label": "fig:confidence-histogram",
+          "caption": "Distribution of model confidence for accepted LLM-generated candidates. The shape is visibly non-parametric because these confidence values are bounded self-reports on [0,1], then truncated by the acceptance cutoff at 0.75, so the observed mass piles up at a few high-confidence values rather than following a Gaussian law.",
+          "html": "../results/figures/confidence_histogram.html"
+        }
+      ]
+    }
+  ]
+}

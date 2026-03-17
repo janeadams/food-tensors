@@ -36,6 +36,7 @@ STARCH_TYPES = [
     "pasta_noodle",
     "pastry_dough",
     "other_grain",
+    "none",
 ]
 
 SOURCE_TYPES = {"cube_rule_prefill", "llm_generated", "manual"}
@@ -47,8 +48,15 @@ STARCH_INDEX = {name: idx for idx, name in enumerate(STARCH_TYPES)}
 
 
 def is_salad_starch_prohibited(cube_type: str, protein_type: str, starch_type: str) -> bool:
-    """True if this cell is definitionally prohibited: under the Cube Rule, salad has no structural starch; a dish that contains starch (e.g. salad with croutons) is nachos, not salad, so (salad, *, k) for any starch k is invalid."""
-    return cube_type == "salad"
+    """True if a salad cell is paired with a non-none starch type."""
+    return cube_type == "salad" and starch_type != "none"
+
+
+def is_structurally_invalid_cell(cube_type: str, protein_type: str, starch_type: str) -> bool:
+    """True if cube morphology and starch axis disagree about structural starch."""
+    return (cube_type == "salad" and starch_type != "none") or (
+        cube_type != "salad" and starch_type == "none"
+    )
 
 
 @dataclass(frozen=True)

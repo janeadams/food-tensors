@@ -1,0 +1,145 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round,font=\small]
+\definecolor{starchfill}{RGB}{183,226,235}
+\definecolor{starchdark}{RGB}{110,175,190}
+\definecolor{wiregray}{RGB}{120,120,120}
+
+\newcommand{\cubehidden}{
+  \draw[wiregray!70, dash pattern=on 1.6pt off 1.6pt, line width=0.28mm]
+    (0.45,0.25) -- (0.45,1.25);
+  \draw[wiregray!70, dash pattern=on 1.6pt off 1.6pt, line width=0.28mm]
+    (0.20,1.00) -- (0.45,1.25);
+}
+
+\newcommand{\cubevisible}{
+  \draw[wiregray, line width=0.35mm] (0.20,0.00) -- (1.00,0.00) -- (1.25,0.25) -- (0.45,0.25) -- cycle;
+  \draw[wiregray, line width=0.35mm] (0.20,0.00) -- (0.20,1.00);
+  \draw[wiregray, line width=0.35mm] (1.00,0.00) -- (1.00,1.00);
+  \draw[wiregray, line width=0.35mm] (1.25,0.25) -- (1.25,1.25);
+  \draw[wiregray, line width=0.35mm] (0.20,1.00) -- (1.00,1.00) -- (1.25,1.25) -- (0.45,1.25);
+}
+
+\newcommand{\fillbottom}{
+  \fill[starchfill]
+    (0.20,0.00) -- (1.00,0.00) -- (1.25,0.25) -- (0.45,0.25) -- cycle;
+}
+
+\newcommand{\filltop}{
+  \fill[starchfill]
+    (0.20,1.00) -- (1.00,1.00) -- (1.25,1.25) -- (0.45,1.25) -- cycle;
+}
+
+\newcommand{\fillleft}{
+  \fill[starchfill]
+    (0.20,0.00) -- (0.45,0.25) -- (0.45,1.25) -- (0.20,1.00) -- cycle;
+}
+
+\newcommand{\fillright}{
+  \fill[starchfill]
+    (1.00,0.00) -- (1.25,0.25) -- (1.25,1.25) -- (1.00,1.00) -- cycle;
+}
+
+\newcommand{\fillfront}{
+  \fill[starchfill]
+    (0.20,0.00) -- (1.00,0.00) -- (1.00,1.00) -- (0.20,1.00) -- cycle;
+}
+
+\newcommand{\iconlabel}[1]{
+  \node[anchor=north,font=\small] at (0.72,-0.24) {#1};
+}
+
+\begin{scope}[shift={(0.0,4.3)}]
+  \cubehidden
+  \cubevisible
+  \iconlabel{salad}
+\end{scope}
+
+\begin{scope}[shift={(3.9,4.3)}]
+  \cubehidden
+  \fillbottom
+  \cubevisible
+  \iconlabel{toast}
+\end{scope}
+
+\begin{scope}[shift={(7.8,4.3)}]
+  \cubehidden
+  \fillbottom
+  \filltop
+  \cubevisible
+  \iconlabel{sandwich}
+\end{scope}
+
+\begin{scope}[shift={(0.0,1.7)}]
+  \cubehidden
+  \fillbottom
+  \fillleft
+  \fillright
+  \cubevisible
+  \iconlabel{taco}
+\end{scope}
+
+\begin{scope}[shift={(3.9,1.7)}]
+  \cubehidden
+  \fillbottom
+  \fillleft
+  \fillright
+  \filltop
+  \cubevisible
+  \iconlabel{sushi}
+\end{scope}
+
+\begin{scope}[shift={(7.8,1.7)}]
+  \cubehidden
+  \fillbottom
+  \fillleft
+  \fillright
+  \fillfront
+  \cubevisible
+  \draw[wiregray, line width=0.35mm] (0.20,1.00) -- (1.00,1.00) -- (1.25,1.25);
+  \iconlabel{quiche}
+\end{scope}
+
+\begin{scope}[shift={(0.0,-0.9)}]
+  \cubehidden
+  \fillbottom
+  \fillleft
+  \fillright
+  \fillfront
+  \filltop
+  \cubevisible
+  \iconlabel{calzone}
+\end{scope}
+
+\begin{scope}[shift={(3.9,-0.9)}]
+  \filldraw[fill=starchfill, draw=starchdark, line width=0.25mm]
+    (0.20,0.06) -- (1.00,0.06) -- (1.25,0.31) -- (0.45,0.31) -- cycle;
+  \filldraw[fill=starchfill, draw=starchdark, line width=0.25mm]
+    (0.20,0.54) -- (1.00,0.54) -- (1.25,0.79) -- (0.45,0.79) -- cycle;
+  \filldraw[fill=starchfill, draw=starchdark, line width=0.25mm]
+    (0.20,1.02) -- (1.00,1.02) -- (1.25,1.27) -- (0.45,1.27) -- cycle;
+  \draw[wiregray, line width=0.35mm] (0.20,0.06) -- (1.00,0.06) -- (1.25,0.31) -- (0.45,0.31) -- cycle;
+  \draw[wiregray, line width=0.35mm] (0.20,0.54) -- (1.00,0.54) -- (1.25,0.79) -- (0.45,0.79) -- cycle;
+  \draw[wiregray, line width=0.35mm] (0.20,1.02) -- (1.00,1.02) -- (1.25,1.27) -- (0.45,1.27) -- cycle;
+  \iconlabel{cake}
+\end{scope}
+
+\begin{scope}[shift={(7.8,-0.9)}]
+  \cubehidden
+  \fillbottom
+  \fillleft
+  \fillright
+  \fillfront
+  \cubevisible
+  \filldraw[fill=starchfill!85!white, draw=starchdark, line width=0.22mm]
+    (0.54,0.24) -- (0.86,0.24) -- (0.96,0.34) -- (0.64,0.34) -- cycle;
+  \filldraw[fill=starchfill!85!white, draw=starchdark, line width=0.22mm]
+    (0.64,0.34) -- (0.96,0.34) -- (0.96,0.74) -- (0.64,0.74) -- cycle;
+  \filldraw[fill=starchfill!85!white, draw=starchdark, line width=0.22mm]
+    (0.86,0.24) -- (0.96,0.34) -- (0.96,0.74) -- (0.86,0.64) -- cycle;
+  \iconlabel{nachos}
+\end{scope}
+\end{tikzpicture}
+\caption{Cube-type morphology schematics for the nine categories on axis $i$. The blue regions indicate structural starch placement; the drawings are schematic rather than literal geometric reconstructions.}
+\label{fig:cube-rule-types}
+\end{figure*}

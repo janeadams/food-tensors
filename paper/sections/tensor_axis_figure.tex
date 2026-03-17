@@ -1,0 +1,44 @@
+\begin{figure}[t]
+\centering
+\tdplotsetmaincoords{68}{118}
+\begin{tikzpicture}[tdplot_main_coords, scale=1.9, line cap=round, line join=round, >=Latex]
+\definecolor{tensorblue}{RGB}{70,110,170}
+\definecolor{tensorfill}{RGB}{191,218,248}
+\definecolor{tensorgray}{RGB}{90,90,90}
+
+\coordinate (O) at (0,0,0);
+\coordinate (X) at (4,0,0);
+\coordinate (Y) at (0,3.2,0);
+\coordinate (Z) at (0,0,3);
+\coordinate (XY) at (4,3.2,0);
+\coordinate (XZ) at (4,0,3);
+\coordinate (YZ) at (0,3.2,3);
+\coordinate (XYZ) at (4,3.2,3);
+
+\filldraw[fill=tensorfill, fill opacity=0.22, draw=tensorblue!75]
+  (O) -- (X) -- (XY) -- (Y) -- cycle;
+\filldraw[fill=tensorfill, fill opacity=0.12, draw=tensorblue!70]
+  (O) -- (X) -- (XZ) -- (Z) -- cycle;
+\filldraw[fill=tensorfill, fill opacity=0.16, draw=tensorblue!70]
+  (X) -- (XY) -- (XYZ) -- (XZ) -- cycle;
+
+\draw[tensorblue!80, line width=0.35mm] (O) -- (Y) -- (YZ) -- (Z) -- cycle;
+\draw[tensorblue!80, line width=0.35mm] (Y) -- (XY) -- (XYZ) -- (YZ);
+\draw[tensorblue!80, line width=0.35mm] (Z) -- (XZ) -- (XYZ);
+\draw[tensorblue!80, line width=0.35mm] (O) -- (X);
+
+\draw[->, thick] (O) -- (4.65,0,0) node[anchor=west] {$i$ (cube type)};
+\draw[->, thick] (O) -- (0,3.75,0) node[anchor=south] {$j$ (protein)};
+\draw[->, thick] (O) -- (0,0,3.55) node[anchor=south] {$k$ (starch)};
+
+\foreach \p in {(0.55,2.25,0.65),(1.35,0.95,2.1),(2.85,2.55,0.55),(3.1,1.15,2.45),(2.15,1.7,1.0)} {
+  \fill[tensorgray] \p circle (1.15pt);
+}
+
+\coordinate (P) at (2.35,1.65,1.55);
+\filldraw[fill=white, draw=black, line width=0.25mm] (P) circle (1.55pt);
+\node[anchor=west] at (2.5,1.65,1.55) {$T_{i,j,k}$};
+\end{tikzpicture}
+\caption{Tensor schematic. The cube-type, protein, and starch axes define the index space of $T$; filled markers illustrate occupied cells in $\mathcal{S}$, and the highlighted marker indicates a generic cell $(i,j,k)$.}
+\label{fig:tensor-axes}
+\end{figure}

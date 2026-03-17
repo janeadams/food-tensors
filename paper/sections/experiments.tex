@@ -1,17 +1,19 @@
 \section{Experiments}
 
 The experiment workflow has three steps: map observed foods to coordinates $(i,j,k)$ and set $T_{i,j,k}=1$ accordingly; measure occupancy $|\mathcal{S}|$ and collisions (multiple foods at the same $(i,j,k)$); and generate candidate foods for cells in $\mathcal{E}$.
+The third step can be interpreted as a constrained categorical form of \term{tensor completion}: we do not impute arbitrary values, but instead propose named dishes for previously unoccupied cells under hard ontological constraints.
 Initial analysis reports which regions of the index set $\{1,\ldots,I\} \times \{1,\ldots,J\} \times \{1,\ldots,K\}$ are dense ($T_{i,j,k}=1$ for many $(i,j,k)$ in a neighborhood), sparse, or structurally inconsistent under the chosen ontology.
 From a representation-learning perspective, this is a small-scale study of \term{combinatorial generalization} under hard axis constraints on $i$, $j$, and $k$.
-Empirically, the workflow behaves like a controlled stress test of whether culinary naming conventions can survive contact with coordinate geometry.
+Empirically, the workflow tests whether culinary naming conventions can be mapped consistently onto the proposed coordinate system.
 Axis categories in Figure~\ref{fig:tensor-projections-speculated} and Figure~\ref{fig:tensor-3d-speculated} are ordered by occupancy-profile hierarchical clustering as described in the Methods section (applied to the indices $i$, $j$, $k$ along each axis).
 \input{sections/generated/figure_omissions}
 
 \paragraph{Review outcomes.}
 All LLM-generated candidates exported for review were accepted and included in the real-only tensor views; the distribution of model confidence for those accepted candidates is shown in Figure~\ref{fig:confidence-histogram}.
+These accepted rows can therefore be read as reviewed tensor-completion proposals rather than unconstrained generative samples.
 
-We also run a targeted mini-experiment on foods whose names explicitly contain ``salad'' (for example, chicken salad, egg salad, and Snickers salad\footnote{Snickers salad is a dessert-style potluck dish, commonly made with chopped Snickers bars, tart apples, and whipped topping (often with pudding), and is widely associated with Upper Midwest potluck and church-supper traditions (especially Minnesota and Iowa), though no single point of origin is well documented.}), asking the model to classify each item by structural starch placement and thus to assign a cube index $i$ (and implicitly $j$, $k$).
-Table~\ref{tab:salad-cube-rule} reports only the subset that violates the Cube Rule salad definition (no structural starch faces; i.e., the assigned $i$ does not match the ``salad'' morphology index).
+We also run a targeted mini-experiment on foods whose names explicitly contain ``salad'' (for example, chicken salad, egg salad, Snickers salad\footnote{Snickers salad is a dessert-style potluck dish, commonly made with chopped Snickers bars, tart apples, and whipped topping (often with pudding), and is widely associated with Upper Midwest potluck and church-supper traditions (especially Minnesota and Iowa), though no single point of origin is well documented.}, and jello salad\footnote{Jello salad is a molded gelatin dish, often containing fruit, marshmallows, or whipped topping, that appears in church-supper, holiday, and potluck traditions across the Upper Midwest and other parts of the United States; despite the name, its structure is far removed from the vegetable-forward sense of ``salad.''}), asking the model to classify each item by structural starch placement and thus to assign a cube index $i$ (and implicitly $j$, $k$).
+Table~\ref{tab:salad-cube-rule} reports only the subset that violates the Cube Rule salad definition (no structural starch faces), which in the tensor corresponds to the `salad` morphology with \texttt{starch\_type=none}.
 As a secondary aside experiment, we test the hypothesis that most violations arise from discrete starch inclusions (for example, croutons, pasta pieces, or candy chunks), which shift morphology from the salad index $i_{\text{salad}}$ toward the Cube Rule ``nachos'' index $i_{\text{nachos}}$ (outer dish plus inner starch).
 \IfFileExists{sections/generated/salad_cube_rule_table.tex}{%
   \input{sections/generated/salad_cube_rule_table}%

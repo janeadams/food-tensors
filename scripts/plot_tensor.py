@@ -23,7 +23,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from tensor_food.io_utils import read_jsonl
-from tensor_food.schema import CUBE_TYPES, PROTEIN_TYPES, STARCH_TYPES, is_salad_starch_prohibited
+from tensor_food.schema import CUBE_TYPES, PROTEIN_TYPES, STARCH_TYPES, is_structurally_invalid_cell
 
 FOODS_JSONL = ROOT / "data" / "processed" / "foods.jsonl"
 FIG_DIR = ROOT / "results" / "figures"
@@ -524,9 +524,16 @@ def main() -> int:
         cprint(f"No rows in {FOODS_JSONL}. Run prefill/review/build steps first.", "yellow")
         return 1
     df = pd.DataFrame(rows)
-    # Exclude definitionally prohibited salad+starch cells (Cube Rule: salad cannot contain starch).
-    df = df[~df.apply(lambda r: is_salad_starch_prohibited(r["cube_type"], r["protein_type"], r["starch_type"]), axis=1)]
-    cprint(f"Loaded {len(df)} rows from {FOODS_JSONL} (salad+starch prohibited cells excluded)", "cyan")
+    # Exclude rows whose cube morphology and starch axis disagree.
+    df = df[
+        ~df.apply(
+            lambda r: is_structurally_invalid_cell(
+                r["cube_type"], r["protein_type"], r["starch_type"]
+            ),
+            axis=1,
+        )
+    ]
+    cprint(f"Loaded {len(df)} rows from {FOODS_JSONL} (structurally invalid cells excluded)", "cyan")
 
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     stage_canonical = canonical_rows(df)

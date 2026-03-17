@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tensor Food Figures</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f7f7;
+        --panel: #ffffff;
+        --panel-border: #d8d8d8;
+        --text: #1f1f1f;
+        --muted: #5c5c5c;
+        --accent: #0b57d0;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141414;
+          --panel: #1f1f1f;
+          --panel-border: #343434;
+          --text: #f2f2f2;
+          --muted: #b8b8b8;
+          --accent: #8ab4f8;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+
+      header {
+        margin-bottom: 32px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 12px;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0 0 12px;
+        line-height: 1.5;
+      }
+
+      .intro {
+        color: var(--muted);
+        max-width: 900px;
+      }
+
+      .note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .section {
+        margin-top: 40px;
+      }
+
+      .cards {
+        display: grid;
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--panel-border);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-header {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .card-meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 12px 0 16px;
+      }
+
+      label {
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      select {
+        font: inherit;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--panel-border);
+        background: var(--panel);
+        color: var(--text);
+      }
+
+      .links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .frame {
+        width: 100%;
+        border: 1px solid var(--panel-border);
+        border-radius: 10px;
+        background: #fff;
+      }
+
+      .single-frame {
+        min-height: 560px;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+      }
+
+      .panel-item h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .panel-item iframe {
+        min-height: 420px;
+      }
+
+      .caption {
+        margin-top: 16px;
+        color: var(--muted);
+      }
+
+      .error {
+        padding: 16px;
+        background: #5f2120;
+        color: #fff;
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Tensor Food Figures</h1>
+        <p class="intro" id="subtitle"></p>
+        <p class="note">
+          This page reuses the interactive HTML outputs already written under
+          <code>results/figures/</code>. Most figures are Vega/Altair exports and
+          the 3D tensor uses Plotly, so each figure is embedded in its own frame.
+        </p>
+      </header>
+      <div id="app"></div>
+    </main>
+    <script>
+      function makeLink(path, label) {
+        const link = document.createElement("a");
+        link.href = path;
+        link.textContent = label;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        return link;
+      }
+
+      function buildLinks(container, links) {
+        const row = document.createElement("div");
+        row.className = "links";
+        links.forEach(({ path, label }) => row.appendChild(makeLink(path, label)));
+        container.appendChild(row);
+      }
+
+      function createIframe(src, title, className) {
+        const frame = document.createElement("iframe");
+        frame.className = `frame ${className || ""}`.trim();
+        frame.src = src;
+        frame.title = title;
+        frame.loading = "lazy";
+        return frame;
+      }
+
+      function renderSingle(figure) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <h3>${figure.title}</h3>
+              <div class="card-meta">${figure.paper_label}</div>
+            </div>
+          </div>
+        `;
+
+        buildLinks(card, [{ path: figure.html, label: "Open figure HTML" }]);
+        card.appendChild(createIframe(figure.html, figure.title, "single-frame"));
+
+        const caption = document.createElement("p");
+        caption.className = "caption";
+        caption.textContent = figure.caption;
+        card.appendChild(caption);
+        return card;
+      }
+
+      function renderStagedSingle(figure) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <h3>${figure.title}</h3>
+              <div class="card-meta">${figure.paper_label}</div>
+            </div>
+          </div>
+        `;
+
+        const controls = document.createElement("div");
+        controls.className = "controls";
+        const label = document.createElement("label");
+        label.textContent = "Stage";
+        label.htmlFor = `${figure.paper_label}-stage`;
+        const select = document.createElement("select");
+        select.id = `${figure.paper_label}-stage`;
+
+        Object.entries(figure.stages).forEach(([stageKey, stage]) => {
+          const option = document.createElement("option");
+          option.value = stageKey;
+          option.textContent = stage.label;
+          if (stageKey === figure.default_stage) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        });
+
+        controls.appendChild(label);
+        controls.appendChild(select);
+        card.appendChild(controls);
+
+        const links = document.createElement("div");
+        const frame = createIframe(
+          figure.stages[figure.default_stage].path,
+          figure.title,
+          "single-frame"
+        );
+
+        function refreshStage(stageKey) {
+          const current = figure.stages[stageKey];
+          frame.src = current.path;
+          links.replaceChildren();
+          buildLinks(links, [{ path: current.path, label: "Open current stage HTML" }]);
+        }
+
+        select.addEventListener("change", (event) => refreshStage(event.target.value));
+        card.appendChild(links);
+        refreshStage(figure.default_stage);
+        card.appendChild(frame);
+
+        const caption = document.createElement("p");
+        caption.className = "caption";
+        caption.textContent = figure.caption;
+        card.appendChild(caption);
+        return card;
+      }
+
+      function renderPanel(figure) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <h3>${figure.title}</h3>
+              <div class="card-meta">${figure.paper_label}</div>
+            </div>
+          </div>
+        `;
+
+        const controls = document.createElement("div");
+        controls.className = "controls";
+        const label = document.createElement("label");
+        label.textContent = "Stage";
+        label.htmlFor = `${figure.paper_label}-panel-stage`;
+        const select = document.createElement("select");
+        select.id = `${figure.paper_label}-panel-stage`;
+        Object.entries(figure.stages).forEach(([stageKey, stageLabel]) => {
+          const option = document.createElement("option");
+          option.value = stageKey;
+          option.textContent = stageLabel;
+          if (stageKey === figure.default_stage) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        });
+        controls.appendChild(label);
+        controls.appendChild(select);
+        card.appendChild(controls);
+
+        const linksHost = document.createElement("div");
+        card.appendChild(linksHost);
+
+        const grid = document.createElement("div");
+        grid.className = "panel-grid";
+        const frames = figure.views.map((view) => {
+          const wrapper = document.createElement("section");
+          wrapper.className = "panel-item";
+          const title = document.createElement("h3");
+          title.textContent = view.title;
+          const frame = createIframe(view.paths[figure.default_stage], view.title);
+          wrapper.appendChild(title);
+          wrapper.appendChild(frame);
+          grid.appendChild(wrapper);
+          return { view, frame };
+        });
+        card.appendChild(grid);
+
+        function refreshStage(stageKey) {
+          linksHost.replaceChildren();
+          buildLinks(
+            linksHost,
+            figure.views.map((view) => ({
+              path: view.paths[stageKey],
+              label: `Open ${view.title}`
+            }))
+          );
+          frames.forEach(({ view, frame }) => {
+            frame.src = view.paths[stageKey];
+          });
+        }
+
+        select.addEventListener("change", (event) => refreshStage(event.target.value));
+        refreshStage(figure.default_stage);
+
+        const caption = document.createElement("p");
+        caption.className = "caption";
+        caption.textContent = figure.caption;
+        card.appendChild(caption);
+        return card;
+      }
+
+      function renderFigure(figure) {
+        if (figure.type === "single") {
+          return renderSingle(figure);
+        }
+        if (figure.type === "staged_single") {
+          return renderStagedSingle(figure);
+        }
+        if (figure.type === "panel") {
+          return renderPanel(figure);
+        }
+        throw new Error(`Unsupported figure type: ${figure.type}`);
+      }
+
+      async function main() {
+        const response = await fetch("./figures.json");
+        if (!response.ok) {
+          throw new Error(`Could not load figures.json (${response.status})`);
+        }
+        const manifest = await response.json();
+        document.title = manifest.title;
+        document.getElementById("subtitle").textContent = manifest.subtitle;
+
+        const app = document.getElementById("app");
+        manifest.sections.forEach((section) => {
+          const sectionNode = document.createElement("section");
+          sectionNode.className = "section";
+          sectionNode.innerHTML = `
+            <h2>${section.title}</h2>
+            <p class="intro">${section.description}</p>
+          `;
+          const cards = document.createElement("div");
+          cards.className = "cards";
+          section.figures.forEach((figure) => cards.appendChild(renderFigure(figure)));
+          sectionNode.appendChild(cards);
+          app.appendChild(sectionNode);
+        });
+      }
+
+      main().catch((error) => {
+        const app = document.getElementById("app");
+        app.innerHTML = `<div class="error">${error.message}</div>`;
+      });
+    </script>
+  </body>
+</html>

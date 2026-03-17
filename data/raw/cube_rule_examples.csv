@@ -1,13 +1,42 @@
 shortname,description,cube_type,protein_type,starch_type,is_real,source_url
-Hot dog,Sausage in a sliced bun,taco,red_meat,wheat,true,https://cuberule.com/
 Pizza slice,Slice with crust base and toppings,toast,dairy,wheat,true,https://cuberule.com/
 Nigiri sushi,Rice base topped with fish,toast,seafood,rice,true,https://cuberule.com/
-Sushi roll,Rice and filling wrapped with nori,sushi,seafood,rice,true,https://cuberule.com/
-Bread bowl soup,Soup served in hollowed bread bowl,quiche,none,wheat,true,https://cuberule.com/
+Pumpkin pie slice,Slice of pumpkin pie with pastry crust base,toast,none,pastry_dough,true,https://cuberule.com/
+Muffin,Unsliced muffin treated as a raw block of starch,toast,none,wheat,true,https://cuberule.com/
+Quesadilla,Non-folded quesadilla made from two tortillas with melted cheese,sandwich,dairy,corn,true,https://cuberule.com/
+Toast sandwich,Slice of toast placed between two bread slices,sandwich,none,wheat,true,https://cuberule.com/
+Victoria sponge,Layered sponge cake filled with cream and strawberries,sandwich,dairy,wheat,true,https://cuberule.com/
+Hot dog,Sausage in a sliced bun,taco,red_meat,wheat,true,https://cuberule.com/
+Sub sandwich,Uncut sub-style sandwich with bread on left bottom and right sides,taco,none,wheat,true,https://cuberule.com/
+Slice of pie,Slice of pie rotated onto its side so crust forms left bottom and right faces,taco,none,pastry_dough,true,https://cuberule.com/
+Falafel wrap,Falafel wrapped with top bottom left and right enclosure,sushi,plant_protein,wheat,true,https://cuberule.com/
+Pigs in a blanket,Sausages wrapped in dough,sushi,red_meat,pastry_dough,true,https://cuberule.com/
+Enchilada,Filled rolled tortilla enclosed on four starch faces,sushi,none,corn,true,https://cuberule.com/
+Cheesecake,Cheesecake held by a crust with bottom and side walls open on top,quiche,dairy,wheat,true,https://cuberule.com/
+Soup in bread bowl,Soup served in an open bread bowl,quiche,none,wheat,true,https://cuberule.com/
+Falafel pita,Falafel served in an open pita pocket,quiche,plant_protein,wheat,true,https://cuberule.com/
+Deep-dish pizza,Deep-dish pizza with crust walls and open top,quiche,dairy,wheat,true,https://cuberule.com/
+Salad in bread bowl,Salad served in an open bread bowl,quiche,none,wheat,true,https://cuberule.com/
+Key lime pie,Key lime filling in an open pastry shell,quiche,dairy,pastry_dough,true,https://cuberule.com/
 Burrito,Filling wrapped in tortilla,calzone,red_meat,wheat,true,https://cuberule.com/
-Falafel wrap,Falafel wrapped in pita,sushi,plant_protein,wheat,true,https://cuberule.com/
 Corn dog,Hot dog coated with corn batter,calzone,red_meat,corn,true,https://cuberule.com/
+Whole pie,Whole pie fully enclosed by crust,calzone,none,pastry_dough,true,https://cuberule.com/
 Dumpling,Sealed dough parcel with filling,calzone,red_meat,pastry_dough,true,https://cuberule.com/
 Pop-Tart,Sealed pastry pocket with sweet filling,calzone,none,pastry_dough,true,https://cuberule.com/
-Mashed potatoes,Creamy smooth potato preparation,salad,none,potato,true,https://cuberule.com/
+Uncrustable,Unbitten sealed sandwich pocket,calzone,none,wheat,true,https://cuberule.com/
+Steak,Grilled steak with no structural starch faces,salad,red_meat,none,true,https://cuberule.com/
+Mashed potatoes,Creamy smooth potato preparation with no structural starch faces,salad,none,none,true,https://cuberule.com/
+Flan,Custard dessert with no structural starch faces,salad,egg,none,true,https://cuberule.com/
+Turducken,Roasted stuffed poultry roast with no structural starch faces,salad,poultry,none,true,https://cuberule.com/
+Chocolate,Stacked bars of dark chocolate treated as a no-structural-starch case,salad,none,none,true,https://cuberule.com/
+Tomato soup,Bowl of tomato soup with no structural starch faces,salad,none,none,true,https://cuberule.com/
+Vanilla soy latte,Vanilla soy latte treated as a wet salad with no structural starch faces,salad,plant_protein,none,true,https://cuberule.com/
 Lasagna,Layered pasta sheets with fillings,cake,red_meat,pasta_noodle,true,https://cuberule.com/
+Big Mac,Stacked burger with three bread layers,cake,red_meat,wheat,true,https://cuberule.com/
+Flapjacks,Stack of flapjacks covered in syrup,cake,none,wheat,true,https://cuberule.com/
+Poutine,French fries with cheese curds and gravy,nachos,dairy,potato,true,https://cuberule.com/
+Lucky Charms,Cereal pieces in milk,nachos,dairy,other_grain,true,https://cuberule.com/
+Salad with croutons,Salad containing croutons becomes nachos due to inner starch pieces,nachos,none,wheat,true,https://cuberule.com/
+Fried noodles,Plate of fried noodles with seafood and green beans,nachos,seafood,pasta_noodle,true,https://cuberule.com/
+Couscous,Plate filled with Moroccan couscous,nachos,none,other_grain,true,https://cuberule.com/
+Ramen,Bowl of ramen noodles in broth (wet nachos),nachos,none,pasta_noodle,true,https://cuberule.com/
