@@ -45,6 +45,13 @@ def humanize(label: str) -> str:
     return label.replace("_", " ").title()
 
 
+def wrap_axis_label(label: str) -> str:
+    parts = label.split()
+    if len(parts) <= 1:
+        return label
+    return "<br>".join(parts)
+
+
 def idx_to_label_map(index_col: str) -> dict[int, str]:
     if index_col == "cube_idx":
         return CUBE_LABELS
@@ -421,6 +428,9 @@ def render_stage_3d(stage_df: pd.DataFrame, title_prefix: str, slug: str, export
     cube_order_labels = [CUBE_LABELS[idx] for idx in cube_order_idx]
     protein_order_labels = [PROTEIN_LABELS[idx] for idx in protein_order_idx]
     starch_order_labels = [STARCH_LABELS[idx] for idx in starch_order_idx]
+    cube_tick_labels = [wrap_axis_label(label) for label in cube_order_labels]
+    protein_tick_labels = [wrap_axis_label(label) for label in protein_order_labels]
+    starch_tick_labels = [wrap_axis_label(label) for label in starch_order_labels]
     plot_3d = occupied_3d.assign(
         cube_type=lambda d: d["cube_idx"].map(dict(enumerate(CUBE_TYPES))).map(humanize),
         protein_type=lambda d: d["protein_idx"].map(dict(enumerate(PROTEIN_TYPES))).map(humanize),
@@ -465,37 +475,60 @@ def render_stage_3d(stage_df: pd.DataFrame, title_prefix: str, slug: str, export
         template="plotly_white",
         showlegend=False,
         paper_bgcolor="white",
+        autosize=True,
         scene=dict(
             aspectmode="cube",
+            domain=dict(x=[0.03, 0.98], y=[0.06, 0.98]),
             xaxis=dict(
                 categoryorder="array",
                 categoryarray=cube_order_labels,
-                tickfont=dict(size=18),
+                tickmode="array",
+                tickvals=cube_order_labels,
+                ticktext=cube_tick_labels,
+                tickfont=dict(size=15),
                 title=dict(text=""),
             ),
             yaxis=dict(
                 categoryorder="array",
                 categoryarray=protein_order_labels,
-                tickfont=dict(size=18),
+                tickmode="array",
+                tickvals=protein_order_labels,
+                ticktext=protein_tick_labels,
+                tickfont=dict(size=15),
                 title=dict(text=""),
             ),
             zaxis=dict(
                 categoryorder="array",
                 categoryarray=starch_order_labels,
-                tickfont=dict(size=18),
+                tickmode="array",
+                tickvals=starch_order_labels,
+                ticktext=starch_tick_labels,
+                tickfont=dict(size=15),
                 title=dict(text=""),
             ),
         ),
-        scene_camera=dict(eye=dict(x=1.35, y=1.25, z=0.95)),
-        margin=dict(l=20, r=20, t=20, b=20),
+        scene_camera=dict(eye=dict(x=1.3, y=1.2, z=0.98)),
+        margin=dict(l=10, r=10, t=10, b=10),
+        height=900,
     )
     output_html = stage_dir / "tensor_3d.html"
-    fig.write_html(str(output_html))
+    fig.write_html(
+        str(output_html),
+        config={"responsive": True, "displaylogo": False},
+        default_width="100%",
+        default_height="100%",
+    )
 
     if export_png:
+        fig.update_layout(
+            scene=dict(domain=dict(x=[0.12, 0.9], y=[0.18, 0.98])),
+            scene_camera=dict(eye=dict(x=1.4, y=1.28, z=1.05)),
+            margin=dict(l=120, r=180, t=40, b=180),
+            height=None,
+        )
         for static_path in (stage_dir / "tensor_3d.png", stage_dir / "tensor_3d.pdf"):
             try:
-                fig.write_image(str(static_path), width=2000, height=1400, scale=2)
+                fig.write_image(str(static_path), width=2400, height=1800, scale=2)
                 cprint(f"Wrote static 3D snapshot to {static_path}", "green")
             except Exception as exc:
                 cprint(f"Could not export {static_path.suffix.upper()} ({exc}).", "yellow")

@@ -2,16 +2,16 @@
 
 We have shown that the Cube Rule of Food can be expressed as a geometric classification problem: dishes map to coordinates $(i,j,k)$ in a third-order tensor $T$, with cube morphology $i$, protein taxonomy $j$, and starch substrate $k$ as the axes of a discrete culinary state space.
 Canonical Cube Rule examples occupy well-defined cells; empty cells correspond to conceivable-but-unobserved dishes; and collisions---multiple foods at the same $(i,j,k)$---become topological facts rather than matters of taste.
-By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad occupies the \texttt{starch\_type=none} slice; the rice exception applies to plain rice as a starch-based mono-food; and the horseshoe theory of salad captures the gradient from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together).
+By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad occupies the \texttt{starch\_type=none} slice; the horseshoe theory of salad captures how the current Rule treats the transition from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together); and mono-starch foods reveal a remaining ambiguity in the ontology rather than a fully resolved corner case.
 Methodologically, this combines prompt taxonomies, lightweight retrieval-augmented generation, guided decoding, and constrained tensor completion within a single food-classification pipeline, for example when canonical dishes such as pizza slice or nigiri are supplied as exemplars before the model proposes new dishes for vacant cells.
 
 This formalism can also be extended in principled ways.
 The index sets $I$, $J$, and $K$ need not remain fixed.
-The cube axis $i$ may gain a dedicated \emph{single-starch} category, resolving the Rule's ``interpret as you wish'' for plain rice and bowls of croutons without collapsing them into salad.
+The cube axis $i$ may gain a dedicated tenth \emph{single-starch} category, resolving the present mismatch in which mashed potatoes fall toward salad, toast sandwich remains sandwich, and plain rice is left to the reader's interpretation.
 The protein axis $j$ may admit gelatin (and thus jello, soup dumplings, and other aspic-bound dishes) as a distinct type, yielding a sparse but coherent region of $\mathcal{S}$.
 The starch axis $k$ may be extended to include sugar-dominant substrates---candy, nougat, snickers bars---so that snickers salad and its ilk cease to be boundary cases and take their place at a named coordinate.
 Such an ontological change, however, should be made with care and with attention to cultural naming practices: doing so would create tension between the Midwestern term ``snickers salad'' and the strict starch-morphology Cube Rule definition of ``salad,'' potentially opening taxonomic rifts between competing ontologies.
 Each such expansion refines the representation of conceivable foods within the same indexing framework.
 
 More broadly, this framework treats morphology, protein, and starch as formal indices rather than informal descriptors.
-Future work can therefore extend the same tensor formalism while keeping the convention that salad occupies the \texttt{starch\_type=none} slice, the rice exception, and starch-based mono-food boundary cases explicit.
+Future work can therefore extend the same tensor formalism while keeping the convention that salad occupies the \texttt{starch\_type=none} slice and treating mono-starch foods as an explicit ontological question rather than an incidental oddity.

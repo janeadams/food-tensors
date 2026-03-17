@@ -22,9 +22,13 @@ Such a case suggests that one might introduce a fourth dimension $\ell$ for temp
 \subsection{Collisions and Ontology Size}
 
 This is mathematically trivial but operationally useful: once the catalog grows past the available cell count, collisions cease to be a modeling accident and become a structural consequence of the ontology.
+At that point the ontology begins to boil over: the problem is no longer too many cooks in the kitchen, but too many dishes on the same plate.
 This motivates optional extensions with additional axes (e.g., a fourth index $\ell$), which can be interpreted as moving from $T \in \{0,1\}^{I \times J \times K}$ toward a higher-order multiway representation.
 For example, future work could introduce additional dimensions such as vegetable type (categorical) or spice level (ordinal or quantitative, depending on how pungency is formalized), but doing so would require explicit decisions about data type and measurement scale before such axes could be used to disambiguate colliding items.
+One especially promising extension is a cuisine-type or cultural-origin axis. Motivated in part by the informal cross-cultural observation we will call the ``Every Country Has a Dumpling Theory''~\cite{ask_europe_dumpling}, such an axis could help identify morphologically similar $(i,j,k)$ combinations that are common in some culinary traditions but absent in others. It could also surface cross-cultural analogies and speculative transfers more carefully, provided that the model does not treat religious dietary constraints or other culturally meaningful prohibitions as ordinary missing data to be imputed away.
 One practical tension is model granularity: under-specified ontologies (small $I$, $J$, $K$) collapse semantically distinct foods into the same $(i,j,k)$, while over-specified ontologies create extreme sparsity ($|\mathcal{S}|/IJK$ very small) and weak empirical support per coordinate.
+The challenge is to add enough garnish to separate meaningful distinctions without overseasoning the ontology into extreme sparsity.
+That same trade-off appears inside existing axes: the current \texttt{other\_grain} starch bucket is convenient, but expanding it to distinguish grains such as teff and quinoa could reduce ambiguity and reveal new neighborhoods of the tensor. Such a refinement might separate established regional foods more cleanly while also making room for plausible cross-category completions, for example an injera burrito built around a teff-based wrapper rather than treating all non-wheat, non-rice grains as the same starch substrate.
 
 \subsection{Scope of the Ontology}
 \label{sec:candy-salad-discussion}
@@ -37,8 +41,14 @@ Future work could ask whether tesseract-like foods or other higher-order culinar
 
 \subsection{Boundary Cases}
 
-The Cube Rule's rice exception (plain rice as a starch-based mono-food) and the proposed gradient from salad to nachos (single starch $\to$ salad; starch plus other things $\to$ nachos) suggest a possible extension: a dedicated category for \emph{single-starch} foods, distinct from salad and nachos, which would resolve the ``interpret as you wish'' for plain rice, plain croutons, and similar starch-based mono-foods without collapsing them into salad.
-Our current dish-level classification leaves that boundary to the Rule's open interpretation.
+The horseshoe theory of salad is an entertaining consequence of the current Cube Rule, but it also exposes a crack in the epistemological crust of the ontology. Mashed potatoes are treated as salad because they are a starch-based mono-food; by the same reasoning, a bowl of croutons appears to revert from nachos back to salad once the lettuce disappears. Yet the toast sandwich is canonically classified as sandwich rather than salad even though it, too, is effectively a mono-starch food, because its starch occupies top and bottom faces rather than none. Plain rice remains even less settled: it is the one food for which the Rule explicitly declines to decide.
+
+Taken together, these cases suggest that morphology alone does not cleanly resolve mono-starch foods. Under the current ontology, one mono-starch becomes salad, another remains sandwich, and a third is left unclassified. This is no longer just a funny edge case but a genuine modeling problem: the present nine categories do not distinguish between dishes whose ambiguity comes from mixed ingredients and dishes whose ambiguity comes from being composed of starch alone. In that sense the analogy to political horseshoe theory cuts twice: just as critics argue that horseshoe theory is reductive because it compresses emergent factions into an overly simple geometry, the Cube Rule also compresses mono-starches into categories built for more familiar morphologies rather than making room for them on their own terms~\cite{horseshoe}. The issue is not merely quirky; it remains slightly underdone at the center.
+
+That tension motivates a tenth cube category reserved for \emph{mono-starches} or \emph{single-starch} foods. Such a category would be distinct from both salad (no structural starch) and nachos (outer container plus inner starch pieces), and would absorb plain rice, plain croutons, mashed potatoes, and related starch-based mono-foods without forcing them into categories whose logic was designed for other structures. Under that extension, the horseshoe theory would remain useful as a description of how the current Cube Rule behaves, while the new category would serve as a cleaner repair to the ontology itself.
+
+Our current dish-level classification does not add that tenth category, so we preserve the Rule's open interpretation for mono-starch boundary cases in the reported tensor.
+Even that repair would leave at least one potato-shaped problem on the table: where should potato-filled pierogis go? Structurally they are calzone-like, since starch encloses the filling from the outside; by filling logic they also look nacho-like, since the interior is itself starch; and under a mono-starch extension they might be claimed as starch through and through. We leave that exercise to the reader.
 Relatedly, jello-style dishes suggest that gelatin may warrant a separate protein index $j$ beyond the current formalism, likely yielding a very sparse but interesting subset of $\mathcal{S}$ in the morphological state space (with soup dumplings as one motivating example, since they classify as calzone under Cube Rule morphology and include gelatinized broth).
 
 \subsection{Topological Interpretation}
@@ -79,11 +89,11 @@ Egg Piroshki & \shortstack[l]{\scriptsize\texttt{egg}\\\scriptsize\texttt{wheat}
 
 These examples are intentionally modest rather than fantastical.
 That modesty exposes an epistemic limitation in the setup: because $\RealFoods$ is a theoretical historical set that we only approximate with a finite catalog, an output proposed for a cell in $\mathcal{E}$ need not truly lie in $\ConceivableFoods \setminus \RealFoods$.
-It may instead be a real but rare, poorly documented, regionally specific, or simply uncatalogued food that our current dataset failed to record.
+It may instead be a real but rare, poorly documented, regionally specific, or simply uncatalogued food that was missing from the menu of our current dataset.
 In other words, the pipeline is better understood as generating candidates at the frontier between the known support of the catalog and the larger, only partially observed set $\RealFoods$.
 
 This raises a natural limiting question: as culinary innovation accumulates over long time scales, does $\RealFoods$ asymptotically approach $\ConceivableFoods$, making genuinely empty cells increasingly scarce?
 We do not answer that here.
 But the framework remains useful under either view.
 If the gap $\ConceivableFoods \setminus \RealFoods$ stays large, then the method is a tool for genuine novelty imputation; if the gap is small, then it is still a productive way to surface interesting, low-attestation, or culturally peripheral combinations that inhabit underexplored regions of the tensor.
-In that weaker but still valuable sense, speculative food fiction is less about inventing nonsense than about finding foods that the morphology suggests ought to exist, whether or not history has already gotten there first.
+In that weaker but still valuable sense, speculative food fiction is less about inventing nonsense than about finding foods that the morphology suggests ought to exist, whether or not history has already gotten there first. The point is less to spice things up for its own sake than to probe which empty cells are structurally plausible.
