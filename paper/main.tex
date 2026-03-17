@@ -3,7 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{graphicx}
@@ -13,14 +13,16 @@
 \usepackage{xcolor}
 \usetikzlibrary{arrows.meta,calc,positioning}
 
-\newcommand{\term}[1]{\textcolor{blue}{#1}}
+\newcommand{\term}[1]{#1}
 % State spaces: real (historically realized) vs conceivable (all possible) foods
 \newcommand{\RealFoods}{\mathbb{F}_{\mathrm{real}}}
 \newcommand{\ConceivableFoods}{\mathbb{F}_{\infty}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
 
 \title{A Tensor-Based Expansion of the Cube Rule for Generative Nutrient Morphology}
-\author{Jane Lydia Adams}
-\date{\today}
+\author{Dr. Jane Lydia Adams, Ph.D.\\\texttt{jane@universalities.com}}
+\date{}
 
 \begin{document}
 \pagenumbering{gobble}
@@ -29,19 +31,20 @@
 
 \begin{abstract}
 We introduce a tensor-based formulation of the Cube Rule of Food in which dishes are embedded in a third-order tensor $T \in \{0,1\}^{I \times J \times K}$ spanning cube morphology (index $i$), protein taxonomy ($j$), and starch substrate ($k$).
-This formulation supports reproducible placement of canonical Cube Rule foods, detection of collisions among distinct dishes at the same cell, and constrained generation of candidate dishes for vacant cells $(i,j,k)$ with $T_{i,j,k}=0$.
+This formulation supports reproducible placement of canonical Cube Rule foods, detection of collisions among distinct dishes at the same cell, and constrained generation of candidate dishes for vacant cells $(i,j,k)$ with $T_{i,j,k}=0$. This induces a weak topology of taste on the index lattice.
 To operationalize the framework, we use a constrained generative procedure that proposes candidate dishes for empty cells, enforces axis-consistency constraints on $i$, $j$, and $k$, and filters the results before downstream review.
 \end{abstract}
 
 \input{sections/introduction}
 \input{sections/related_work}
 \input{sections/methods}
+\input{sections/software}
 \input{sections/experiments}
 \input{sections/discussion}
 \input{sections/conclusion}
 
 \section*{Acknowledgements}
-This work would of course not have been possible without the framework provided by the Cube Rule of Food by André Arko. The author thanks Connor Wilson for inspiring this idea, Michael Davinroy for introducing the concepts of snickers salad and jello salad, and Andrew McNutt for first sharing SIGBOVIK.
+This work would of course not have been possible without the framework provided by the Cube Rule of Food by André Arko. The author thanks Connor Wilson for inspiring this idea, Michael Davinroy for introducing the concepts of snickers salad and jello salad, and Andrew McNutt for first sharing SIGBOVIK~\cite{sigbovik}.
 
 \bibliographystyle{plain}
 \bibliography{references}

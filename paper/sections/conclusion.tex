@@ -2,8 +2,8 @@
 
 We have shown that the Cube Rule of Food can be expressed as a geometric classification problem: dishes map to coordinates $(i,j,k)$ in a third-order tensor $T$, with cube morphology $i$, protein taxonomy $j$, and starch substrate $k$ as the axes of a discrete culinary state space.
 Canonical Cube Rule examples occupy well-defined cells; empty cells correspond to conceivable-but-unobserved dishes; and collisions---multiple foods at the same $(i,j,k)$---become topological facts rather than matters of taste.
-By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad occupies the \texttt{starch\_type=none} slice; the rice exception applies to plain rice as a mono-food; and the \term{horseshoe theory of salad} captures the gradient from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together).
-Methodologically, this combines \term{prompt taxonomies}, lightweight \term{retrieval-augmented generation}, \term{guided decoding}, and constrained \term{tensor completion} within a single food-classification pipeline.
+By constraining an LLM to propose candidates under strict axis matching, lexical guardrails, and a review gate, we have extended the support set $\mathcal{S}$ beyond the canonical seed while keeping the tensor falsifiable and the Rule's edge cases explicit: salad occupies the \texttt{starch\_type=none} slice; the rice exception applies to plain rice as a starch-based mono-food; and the horseshoe theory of salad captures the gradient from single-component salad (all lettuce or all croutons) to nachos (lettuce and croutons together).
+Methodologically, this combines prompt taxonomies, lightweight retrieval-augmented generation, guided decoding, and constrained tensor completion within a single food-classification pipeline, for example when canonical dishes such as pizza slice or nigiri are supplied as exemplars before the model proposes new dishes for vacant cells.
 
 This formalism can also be extended in principled ways.
 The index sets $I$, $J$, and $K$ need not remain fixed.
@@ -14,4 +14,4 @@ Such an ontological change, however, should be made with care and with attention
 Each such expansion refines the representation of conceivable foods within the same indexing framework.
 
 More broadly, this framework treats morphology, protein, and starch as formal indices rather than informal descriptors.
-Future work can therefore extend the same tensor formalism while keeping the convention that salad occupies the \texttt{starch\_type=none} slice, the rice exception, and mono-food boundary cases explicit.
+Future work can therefore extend the same tensor formalism while keeping the convention that salad occupies the \texttt{starch\_type=none} slice, the rice exception, and starch-based mono-food boundary cases explicit.

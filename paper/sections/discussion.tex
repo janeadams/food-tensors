@@ -1,14 +1,35 @@
 \section{Discussion}
 
-If the number of distinct foods we assign to coordinates exceeds $IJK$, then by the \term{pigeonhole principle} at least one cell $(i,j,k)$ must contain more than one food; that is, collisions are guaranteed when $|\RealFoods| > IJK$ (or when mapping any subset of $\ConceivableFoods$ of size $> IJK$ into the index space).
-This motivates optional extensions with additional axes (e.g., a fourth index $\ell$), which can be interpreted as moving from $T \in \{0,1\}^{I \times J \times K}$ toward a higher-order \term{multiway representation}.
+\begin{center}
+\fbox{%
+\begin{minipage}{0.94\linewidth}
+\begin{theorem}[Theorem 1 (No Free Lunch Special).]
+If the number of distinct foods assigned to tensor cells exceeds $IJK$, then at least one coordinate $(i,j,k)$ must contain more than one food.
+Equivalently, if $|\RealFoods| > IJK$ (or if any subset of $\ConceivableFoods$ of size $> IJK$ is mapped into the index space), then collisions are unavoidable.
+\end{theorem}
+\begin{proof}[Proof (sketch)]
+There are exactly $IJK$ available cells in the tensor.
+Assigning more than $IJK$ distinct foods to those cells forces at least one cell to receive two or more foods by the pigeonhole principle~\cite{pigeonhole}.
+\end{proof}
+\textit{Example.} A concrete collision can occur at $(i,j,k) = (\text{nachos}, \text{red\_meat}, \text{pasta\_noodle})$, where both pasta salad with ground beef and spaghetti with meatballs plausibly occupy the same tensor cell despite differing in serving convention and internal structure.
+Such a case suggests that one might introduce a fourth dimension $\ell$ for temperature or a fifth dimension $m$ for protein morphology if finer distinctions are desired.
+\end{minipage}%
+}
+\end{center}
+
+This is mathematically trivial but operationally useful: once the catalog grows past the available cell count, collisions cease to be a modeling accident and become a structural consequence of the ontology.
+This motivates optional extensions with additional axes (e.g., a fourth index $\ell$), which can be interpreted as moving from $T \in \{0,1\}^{I \times J \times K}$ toward a higher-order multiway representation.
 For example, future work could introduce additional dimensions such as vegetable type (categorical) or spice level (ordinal or quantitative, depending on how pungency is formalized), but doing so would require explicit decisions about data type and measurement scale before such axes could be used to disambiguate colliding items.
 One practical tension is model granularity: under-specified ontologies (small $I$, $J$, $K$) collapse semantically distinct foods into the same $(i,j,k)$, while over-specified ontologies create extreme sparsity ($|\mathcal{S}|/IJK$ very small) and weak empirical support per coordinate.
 Future extensions should resolve boundary cases where sugar-dominant processed inclusions (for example nougat/candy in Snickers salad) may trigger non-salad intuitions without mapping cleanly to the current starch index $k$.
-The Cube Rule's rice exception (plain rice as a mono-food) and the proposed gradient from salad to nachos (single starch $\to$ salad; starch plus other things $\to$ nachos) suggest a possible extension: a dedicated category for \emph{single-starch} foods, distinct from salad and nachos, which would resolve the ``interpret as you wish'' for plain rice, plain croutons, and similar mono-foods without collapsing them into salad.
+This paper restricts attention to edible foods, even though the original Cube Rule also discusses non-food cases and famously proposes, for example, that humans are ravioli (that is, calzones under the Rule's morphology).
+An expanded ontology with additional starch and protein categories might therefore reveal interesting findings outside ordinary cuisine as well: a leatherbound book, for instance, could be modeled as an inverse taco in which a protein-like exterior surrounds a filling of starch.
+We also restrict the morphological axis to ordinary three-dimensional food geometry and do not attempt higher-dimensional morphology.
+Future work could ask whether tesseract-like foods or other higher-order culinary solids require an additional extension of the cube axis itself, effectively promoting morphology to a richer higher-dimensional index.
+The Cube Rule's rice exception (plain rice as a starch-based mono-food) and the proposed gradient from salad to nachos (single starch $\to$ salad; starch plus other things $\to$ nachos) suggest a possible extension: a dedicated category for \emph{single-starch} foods, distinct from salad and nachos, which would resolve the ``interpret as you wish'' for plain rice, plain croutons, and similar starch-based mono-foods without collapsing them into salad.
 Our current dish-level classification leaves that boundary to the Rule's open interpretation.
 Relatedly, jello-style dishes suggest that gelatin may warrant a separate protein index $j$ beyond the current formalism, likely yielding a very sparse but interesting subset of $\mathcal{S}$ in the morphological state space (with soup dumplings as one motivating example, since they classify as calzone under Cube Rule morphology and include gelatinized broth).
-Topological language is useful here: regions where $T_{i,j,k}=1$ is dense in index space behave like low-curvature neighborhoods, while isolated $(i,j,k) \in \mathcal{S}$ resemble high-curvature outliers in a discrete \term{morphological state space}.
-If local adjacency relations are imposed on occupied cells, $\mathcal{S}$ can also be viewed as inducing a sparse \term{simplicial complex} over the index lattice, with missing bridges and cavities corresponding to structurally absent combinations.
-Under that view, \term{persistent homology} and broader \term{topological data analysis} provide language for discussing connected components, holes, and other mesoscale features of the food-occupancy pattern as the ontology grows.
+Topological language is useful here: regions where $T_{i,j,k}=1$ is dense in index space behave like low-curvature neighborhoods, while isolated $(i,j,k) \in \mathcal{S}$ resemble high-curvature outliers in a discrete morphological state space; for example, several bread-based categories may cluster while a more unusual dish such as jello salad sits farther from those neighborhoods.
+If local adjacency relations are imposed on occupied cells, $\mathcal{S}$ can also be viewed as inducing a sparse simplicial complex over the index lattice, with missing bridges and cavities corresponding to structurally absent combinations.
+Under that view, persistent homology and broader topological data analysis provide language for discussing connected components, holes, and other mesoscale features of the food-occupancy pattern as the ontology grows, such as whether sushi-like foods form one connected region while dessert salads occupy scattered outlier cells.
 Operationally, the ontology should avoid both excessive coarseness and excessive fragmentation: $I$, $J$, and $K$ should be large enough to separate distinct dishes, but restrained enough to keep $|\mathcal{S}|$ empirically supportable.

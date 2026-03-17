@@ -1,7 +1,14 @@
 \section{Introduction}
 
 This project studies a formal extension of the Cube Rule of Food using a rank-3 tensor $T$ over three categorical axes.
-We work with two \emph{theoretical} state spaces: $\RealFoods$ (foods taken to have been cooked in recorded history---a set we approximate, not observe in full) and $\ConceivableFoods$ (all conceivable foods, including in principle those not yet or never prepared---a space we cannot directly verify), with $\RealFoods \subseteq \ConceivableFoods$.
-The immediate objective is to define a compact ontology in which each food in $\ConceivableFoods$ is assigned a coordinate triple $(i,j,k)$ in the discrete latent space $\{1,\ldots,I\} \times \{1,\ldots,J\} \times \{1,\ldots,K\}$, so that canonical Cube Rule examples are representable and ambiguous cases are explicit.
+The immediate objective is to define a compact ontology in which each food is assigned a coordinate triple $(i,j,k)$ in the discrete latent space $\{1,\ldots,I\} \times \{1,\ldots,J\} \times \{1,\ldots,K\}$, so that canonical Cube Rule examples are representable and ambiguous cases are explicit.
 Our framing treats occupancy, sparsity, and ambiguity as geometric properties of $T$ rather than anecdotal judgments.
 Under this formulation, cuisine is represented as a discrete structure over the index space rather than as an informal list of examples.
+
+\subsection{The Cube Rule of Food}
+
+The Cube Rule of Food~\cite{arko_cube_rule_food} (\url{https://cuberule.com/}) is a morphology-based classification scheme that assigns a dish according to where structural starch appears on the six faces of an idealized cube.
+In the original Rule, these labels are morphology-only categories rather than cuisine names: \emph{salad} has no structural starch faces, \emph{toast} has a bottom starch face, \emph{sandwich} has top and bottom starch faces, \emph{taco} has left, right, and bottom starch faces, \emph{sushi} has top, left, right, and bottom starch faces, \emph{quiche} has side walls and a bottom with an open top, \emph{calzone} is fully enclosed, \emph{cake} consists of stacked starch layers, and \emph{nachos} denotes an outer container plus interior starch pieces.
+These nine morphologies define the cube-type axis used throughout this paper and supply the structural vocabulary that the tensor formalism extends with protein and starch-type axes.
+Figure~\ref{fig:cube-rule-types} summarizes the nine cube types schematically.
+\input{sections/cube_rule_types_figure}

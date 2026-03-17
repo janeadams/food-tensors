@@ -1,9 +1,9 @@
 \section{Experiments}
 
 The experiment workflow has three steps: map observed foods to coordinates $(i,j,k)$ and set $T_{i,j,k}=1$ accordingly; measure occupancy $|\mathcal{S}|$ and collisions (multiple foods at the same $(i,j,k)$); and generate candidate foods for cells in $\mathcal{E}$.
-The third step can be interpreted as a constrained categorical form of \term{tensor completion}: we do not impute arbitrary values, but instead propose named dishes for previously unoccupied cells under hard ontological constraints.
-Initial analysis reports which regions of the index set $\{1,\ldots,I\} \times \{1,\ldots,J\} \times \{1,\ldots,K\}$ are dense ($T_{i,j,k}=1$ for many $(i,j,k)$ in a neighborhood), sparse, or structurally inconsistent under the chosen ontology.
-From a representation-learning perspective, this is a small-scale study of \term{combinatorial generalization} under hard axis constraints on $i$, $j$, and $k$.
+The third step can be interpreted as a constrained categorical form of tensor completion: we do not impute arbitrary values, but instead propose named dishes for previously unoccupied cells under hard ontological constraints, such as asking for a plausible dish at a previously empty cube/protein/starch combination rather than assigning an anonymous latent value.
+Initial analysis reports which regions of the index set $\{1,\ldots,I\} \times \{1,\ldots,J\} \times \{1,\ldots,K\}$ are dense ($T_{i,j,k}=1$ for many $(i,j,k)$ in a neighborhood), sparse, or structurally inconsistent under the chosen ontology; the sparse regions can also be read as zones of uneaten potential.
+From a representation-learning perspective, this is a small-scale study of combinatorial generalization under hard axis constraints on $i$, $j$, and $k$: the model must recombine familiar ingredients and morphologies into specific candidates such as a new toast-type seafood/rice dish or a new quiche-type dairy/pastry dish.
 Empirically, the workflow tests whether culinary naming conventions can be mapped consistently onto the proposed coordinate system.
 Axis categories in Figure~\ref{fig:tensor-projections-speculated} and Figure~\ref{fig:tensor-3d-speculated} are ordered by occupancy-profile hierarchical clustering as described in the Methods section (applied to the indices $i$, $j$, $k$ along each axis).
 \input{sections/generated/figure_omissions}
