@@ -29,7 +29,6 @@ results/llm_batches/*
 # Generated paper inputs and outputs
 paper/sections/generated/*
 !paper/sections/generated/.gitkeep
-paper/main.pdf
 paper/*.aux
 paper/*.bbl
 paper/*.bcf
