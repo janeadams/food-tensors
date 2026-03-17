@@ -259,7 +259,7 @@ def write_outputs(rows: list[dict[str, Any]], model: str) -> None:
         [
             "\\bottomrule",
             "\\end{tabular}",
-            "\\caption{Mini-experiment: only foods containing the word salad were tested, and only violations of the Cube Rule salad definition (no structural starch faces; in the tensor, salad with \\texttt{starch\\_type=none}) are reported.}",
+            "\\caption{The Candy Salad Conundrum: only foods containing the word salad were tested, and only violations of the Cube Rule salad definition (no structural starch faces; in the tensor, salad with \\texttt{starch\\_type=none}) are reported.}",
             "\\label{tab:salad-cube-rule}",
             "\\end{table}",
             "",
@@ -271,7 +271,7 @@ def write_outputs(rows: list[dict[str, Any]], model: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Run a mini-experiment classifying colloquial salad foods under Cube Rule starch placement."
+        description="Run a salad-name experiment classifying colloquial salad foods under Cube Rule starch placement."
     )
     parser.add_argument("--model", default="claude-opus-4-6")
     parser.add_argument("--max-tokens", type=int, default=1600)

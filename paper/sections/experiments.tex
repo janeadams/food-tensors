@@ -8,25 +8,11 @@ Empirically, the workflow tests whether culinary naming conventions can be mappe
 Axis categories in Figure~\ref{fig:tensor-projections-speculated} and Figure~\ref{fig:tensor-3d-speculated} are ordered by occupancy-profile hierarchical clustering as described in the Methods section (applied to the indices $i$, $j$, $k$ along each axis).
 \input{sections/generated/figure_omissions}
 
-\paragraph{Review outcomes.}
-All LLM-generated candidates exported for review were accepted and included in the real-only tensor views; the distribution of model confidence for those accepted candidates is shown in Figure~\ref{fig:confidence-histogram}.
-These accepted rows can therefore be read as reviewed tensor-completion proposals rather than unconstrained generative samples.
-
-We also run a targeted mini-experiment on foods whose names explicitly contain ``salad'' (for example, chicken salad, egg salad, Snickers salad\footnote{Snickers salad is a dessert-style potluck dish, commonly made with chopped Snickers bars, tart apples, and whipped topping (often with pudding), and is widely associated with Upper Midwest potluck and church-supper traditions (especially Minnesota and Iowa), though no single point of origin is well documented.}, and jello salad\footnote{Jello salad is a molded gelatin dish, often containing fruit, marshmallows, or whipped topping, that appears in church-supper, holiday, and potluck traditions across the Upper Midwest and other parts of the United States; despite the name, its structure is far removed from the vegetable-forward sense of ``salad.''}), asking the model to classify each item by structural starch placement and thus to assign a cube index $i$ (and implicitly $j$, $k$).
-Table~\ref{tab:salad-cube-rule} reports only the subset that violates the Cube Rule salad definition (no structural starch faces), which in the tensor corresponds to the `salad` morphology with \texttt{starch\_type=none}.
-As a secondary aside experiment, we test the hypothesis that most violations arise from discrete starch inclusions (for example, croutons, pasta pieces, or candy chunks), which shift morphology from the salad index $i_{\text{salad}}$ toward the Cube Rule ``nachos'' index $i_{\text{nachos}}$ (outer dish plus inner starch).
-\IfFileExists{sections/generated/salad_cube_rule_table.tex}{%
-  \input{sections/generated/salad_cube_rule_table}%
-}{%
-  \paragraph{Mini-experiment data pending.}
-  Run \texttt{uv run python scripts/salad\_cube\_rule\_experiment.py} to generate \texttt{paper/sections/generated/salad\_cube\_rule\_table.tex}.
-}
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.49\textwidth]{../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_cube_vs_protein.png}\hfill
 \includegraphics[width=0.49\textwidth]{../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_cube_vs_starch.png}
-\vspace{0.5em}
+\vspace{0.5em}snickerssnickerssnickers
 \includegraphics[width=0.49\textwidth]{../results/figures/canonical_plus_llm_identified_plus_llm_speculated/tensor_protein_vs_starch.png}
 \caption{Pairwise projections of $T$: slices over $(i,j)$, $(i,k)$, and $(j,k)$. Black squares mark canonical $(i,j,k)$ with $T_{i,j,k}=1$, gray squares mark accepted real LLM-identified cells, and white squares with black outlines mark LLM speculative cells; cells in $\mathcal{E}$ are shown without glyphs.\omitSpeculatedSummary}
 \label{fig:tensor-projections-speculated}
@@ -39,8 +25,24 @@ As a secondary aside experiment, we test the hypothesis that most violations ari
 \label{fig:tensor-3d-speculated}
 \end{figure}
 
+\paragraph{Review outcomes.}
+All LLM-generated candidates exported for review were accepted and included in the real-only tensor views; the distribution of model confidence for those accepted candidates is shown in Figure~\ref{fig:confidence-histogram}.
+These accepted rows can therefore be read as reviewed tensor-completion proposals rather than unconstrained generative samples.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.35\textwidth]{../results/figures/confidence_histogram.png}
 \input{sections/generated/confidence_histogram_caption}
 \end{figure}
+
+\subsection{The Candy Salad Conundrum}
+
+We also run a targeted analysis of foods whose names explicitly contain ``salad'' (for example, chicken salad, egg salad, Snickers salad\footnote{Snickers salad is a dessert-style potluck dish, commonly made with chopped Snickers bars, tart apples, and whipped topping (often with pudding), and is widely associated with Upper Midwest potluck and church-supper traditions (especially Minnesota and Iowa), though no single point of origin is well documented.}, and jello salad\footnote{Jello salad is a molded gelatin dish, often containing fruit, marshmallows, or whipped topping, that appears in church-supper, holiday, and potluck traditions across the Upper Midwest and other parts of the United States; despite the name, its structure is far removed from the vegetable-forward sense of ``salad.''}), asking the model to classify each item by structural starch placement and thus to assign a cube index $i$ (and implicitly $j$, $k$).
+Table~\ref{tab:salad-cube-rule} reports only the subset that violates the Cube Rule salad definition (no structural starch faces), which in the tensor corresponds to the `salad` morphology with \texttt{starch\_type=none}.
+We test the hypothesis that many such violations arise from discrete starch inclusions (for example, croutons, pasta pieces, or candy chunks), which shift morphology from the salad index $i_{\text{salad}}$ toward the Cube Rule ``nachos'' index $i_{\text{nachos}}$ (outer dish plus inner starch).
+\IfFileExists{sections/generated/salad_cube_rule_table.tex}{%
+  \input{sections/generated/salad_cube_rule_table}%
+}{%
+  \paragraph{Candy Salad Conundrum data pending.}
+  Run \texttt{uv run python scripts/salad\_cube\_rule\_experiment.py} to generate \texttt{paper/sections/generated/salad\_cube\_rule\_table.tex}.
+}

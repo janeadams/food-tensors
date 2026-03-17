@@ -3,7 +3,7 @@
 \begin{center}
 \fbox{%
 \begin{minipage}{0.94\linewidth}
-\begin{theorem}[Theorem 1 (No Free Lunch Special).]
+\begin{theorem}[No Free Lunch Special]
 If the number of distinct foods assigned to tensor cells exceeds $IJK$, then at least one coordinate $(i,j,k)$ must contain more than one food.
 Equivalently, if $|\RealFoods| > IJK$ (or if any subset of $\ConceivableFoods$ of size $> IJK$ is mapped into the index space), then collisions are unavoidable.
 \end{theorem}
@@ -21,7 +21,7 @@ This is mathematically trivial but operationally useful: once the catalog grows 
 This motivates optional extensions with additional axes (e.g., a fourth index $\ell$), which can be interpreted as moving from $T \in \{0,1\}^{I \times J \times K}$ toward a higher-order multiway representation.
 For example, future work could introduce additional dimensions such as vegetable type (categorical) or spice level (ordinal or quantitative, depending on how pungency is formalized), but doing so would require explicit decisions about data type and measurement scale before such axes could be used to disambiguate colliding items.
 One practical tension is model granularity: under-specified ontologies (small $I$, $J$, $K$) collapse semantically distinct foods into the same $(i,j,k)$, while over-specified ontologies create extreme sparsity ($|\mathcal{S}|/IJK$ very small) and weak empirical support per coordinate.
-Future extensions should resolve boundary cases where sugar-dominant processed inclusions (for example nougat/candy in Snickers salad) may trigger non-salad intuitions without mapping cleanly to the current starch index $k$.
+Future extensions should resolve boundary cases where sugar-dominant processed inclusions (for example nougat/candy in snickers salad) may trigger non-salad intuitions without mapping cleanly to the current starch index $k$.
 This paper restricts attention to edible foods, even though the original Cube Rule also discusses non-food cases and famously proposes, for example, that humans are ravioli (that is, calzones under the Rule's morphology).
 An expanded ontology with additional starch and protein categories might therefore reveal interesting findings outside ordinary cuisine as well: a leatherbound book, for instance, could be modeled as an inverse taco in which a protein-like exterior surrounds a filling of starch.
 We also restrict the morphological axis to ordinary three-dimensional food geometry and do not attempt higher-dimensional morphology.
